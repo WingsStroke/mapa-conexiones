@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cartografía del Control Digital - El Enemigo Conoce el Sistema</title>
+    
+    <!-- Fuentes Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-principal: #030508;
+            --bg-nodo: rgba(13, 17, 23, 0.85);
+            --bg-modal: rgba(10, 14, 20, 0.95);
+            
+            /* Paleta Neón basada en la investigación */
+            --neon-captura: #ff3366;   /* Rojo Dopamina / Adicción */
+            --neon-vigilancia: #00e5ff; /* Cian Panóptico */
+            --neon-algoritmo: #ffaa00;  /* Naranja / Amarillo Opacidad */
+            --neon-revolucion: #00ff66; /* Verde Ética Hacker */
+            --neon-negocio: #b800ff;    /* Púrpura Plutonio Digital */
+            --neon-centro: #ffffff;     /* Blanco Eje */
+            
+            --texto-principal: #f8fafc;
+            --texto-secundario: #94a3b8;
+            --texto-mutado: #475569;
+            --linea-base: #1e293b;
+            
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            font-family: var(--font-body);
+            overflow: hidden;
+            /* Fondo generativo: Dot Matrix */
+            background-image: radial-gradient(var(--texto-mutado) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0;
+            animation: backgroundPan 60s linear infinite;
+        }
+
+        @keyframes backgroundPan {
+            from { background-position: 0 0; }
+            to { background-position: -400px -400px; }
+        }
+
+        /* Pantalla de Intro */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease, visibility 1s;
+        }
+        #intro-overlay h1 {
+            font-family: var(--font-display); font-size: 4vw; color: #fff;
+            text-transform: uppercase; letter-spacing: 4px; text-align: center;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: glitch 2s infinite;
+        }
+        #intro-overlay p {
+            font-family: var(--font-display); color: var(--neon-vigilancia); margin-top: 20px;
+            font-size: 1.5vw; animation: pulse 2s infinite; cursor: pointer;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75); }
+        }
+
+        /* Contenedor y Lienzo */
+        #viewport { width: 100vw; height: 100vh; position: relative; cursor: grab; touch-action: none; }
+        #viewport:active { cursor: grabbing; }
+
+        #canvas {
+            width: 6000px; height: 4500px; /* Lienzo expandido */
+            position: absolute;
+            transform-origin: 0 0;
+            transition: filter 0.4s ease, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            will-change: transform;
+        }
+        #canvas.sin-transicion { transition: filter 0.4s ease; }
+        #canvas.desenfocado { filter: blur(15px) grayscale(50%) brightness(0.4); pointer-events: none; }
+
+        /* HUD de Navegación */
+        #hud {
+            position: fixed; bottom: 40px; right: 40px; z-index: 50;
+            display: flex; gap: 15px; background: rgba(15, 23, 42, 0.7);
+            padding: 15px; border-radius: 20px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .hud-btn {
+            background: rgba(255,255,255,0.1); border: none; color: #fff;
+            width: 50px; height: 50px; border-radius: 50%; font-size: 24px;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .hud-btn:active { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+        .hud-btn.primary { background: var(--neon-vigilancia); color: #000; font-weight: bold; }
+
+        /* Capa SVG */
+        #svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+        /* Líneas y Animaciones SVG */
+        .linea-bucle { fill: none; stroke-width: 6; stroke-dasharray: 15 15; animation: flujoDatos 2.5s linear infinite; opacity: 0.8; }
+        .linea-sensor { fill: none; stroke: var(--linea-base); stroke-width: 3; stroke-dasharray: 8 8; opacity: 0.4; }
+        .linea-subnodo { fill: none; stroke: var(--texto-mutado); stroke-width: 2; }
+        
+        .etiqueta-flujo { fill: #fff; font-family: var(--font-display); font-size: 22px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.8)); }
+        .etiqueta-bg { fill: rgba(10,14,20,0.8); stroke: var(--texto-mutado); stroke-width: 1; rx: 15; }
+
+        @keyframes flujoDatos { to { stroke-dashoffset: -60; } }
+        .particula { fill: #fff; filter: drop-shadow(0 0 12px #fff); }
+
+        /* El Tornillo Maestro (Centro 3D) */
+        .nodo-smartphone {
+            position: absolute; width: 280px; height: 550px;
+            transform: translate(-50%, -50%); cursor: pointer; z-index: 30;
+            perspective: 1000px;
+        }
+        .smartphone-body {
+            width: 100%; height: 100%; position: relative;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 6px solid #334155; border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.1), 0 0 100px rgba(255,255,255,0.15);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transform: rotateY(0deg) rotateX(0deg);
+            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.5s ease;
+            transform-style: preserve-3d;
+        }
+        .nodo-smartphone:active .smartphone-body {
+            transform: rotateY(-10deg) rotateX(5deg) scale(1.05);
+            box-shadow: -20px 40px 80px rgba(0,0,0,0.9), 0 0 150px rgba(255,255,255,0.3);
+        }
+        .smart-screen { 
+            background: #000; width: 90%; height: 90%; border-radius: 25px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            text-align: center; padding: 20px; border: 2px solid #000;
+            position: relative; overflow: hidden;
+        }
+        /* Reflejo pantalla */
+        .smart-screen::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
+            transform: rotate(30deg); pointer-events: none;
+        }
+        .smart-notch { width: 45%; height: 25px; background: #000; position: absolute; top: 15px; border-radius: 0 0 15px 15px; z-index: 2; border-bottom: 1px solid #222;}
+        .smart-screen h2 { font-family: var(--font-display); font-size: 28px; color: var(--neon-centro); margin-bottom: 15px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.5);}
+        .smart-screen p { font-size: 15px; color: var(--texto-secundario); font-weight: 300; }
+        .sensor-halo { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); border-radius: 50%; border: 2px dashed rgba(255,255,255,0.2); pointer-events: none; animation: spin 20s linear infinite; }
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* Nodos Principales Expandidos */
+        .nodo {
+            position: absolute; width: 480px; background-color: var(--bg-nodo);
+            border-radius: 24px; border: 2px solid; overflow: hidden;
+            transform: translate(-50%, -50%); cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        .nodo:active { transform: translate(-50%, -50%) scale(1.08); z-index: 20; }
+        
+        .nodo-img-bg {
+            width: 100%; height: 160px; background-size: cover; background-position: center;
+            position: relative; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .nodo-img-bg::after { /* Gradiente para oscurecer la imagen */
+            content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--bg-nodo));
+        }
+        .nodo-content { padding: 30px; position: relative; }
+        
+        .nodo h2 { font-family: var(--font-display); font-size: 32px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; position: relative; z-index: 2;}
+        .nodo h3 { font-family: var(--font-body); font-size: 18px; color: var(--texto-secundario); margin-bottom: 20px; font-weight: 400; position: relative; z-index: 2;}
+        
+        .nodo ul { list-style: none; margin-bottom: 25px; }
+        .nodo li { font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; color: #cbd5e1; }
+        .nodo li::before { content: '▸'; margin-right: 10px; font-size: 20px; }
+        
+        .nodo-badge {
+            display: inline-block; padding: 8px 16px; border-radius: 20px;
+            font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Satélites de Información */
+        .satelite {
+            position: absolute; width: 28px; height: 28px;
+            border-radius: 50%; transform: translate(-50%, -50%);
+            cursor: pointer; z-index: 25;
+            transition: transform 0.2s;
+            animation: flotacion 4s ease-in-out infinite;
+        }
+        
+        .satelite:active { transform: translate(-50%, -50%) scale(1.3) !important; animation-play-state: paused !important; }
+        
+        @keyframes flotacion {
+            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+            25% { transform: translate(calc(-50% - 10px), calc(-50% + 8px)) scale(1.05); }
+            50% { transform: translate(-50%, calc(-50% - 15px)) scale(1.1); box-shadow: 0 0 25px currentColor, 0 0 40px currentColor; }
+            75% { transform: translate(calc(-50% + 10px), calc(-50% + 5px)) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+        }
+
+        .s-rojo { background-color: var(--neon-captura); color: rgba(255, 51, 102, 0.6); border: 2px solid #fff; }
+        .s-cian { background-color: var(--neon-vigilancia); color: rgba(0, 229, 255, 0.6); border: 2px solid #fff; }
+        .s-amarillo { background-color: var(--neon-algoritmo); color: rgba(255, 170, 0, 0.6); border: 2px solid #fff; }
+        .s-verde { background-color: var(--neon-revolucion); color: rgba(0, 255, 102, 0.6); border: 2px solid #fff; }
+        .s-purpura { background-color: var(--neon-negocio); color: rgba(184, 0, 255, 0.6); border: 2px solid #fff; }
+        .s-blanco { background-color: var(--neon-centro); color: rgba(255, 255, 255, 0.6); border: 2px solid #555; }
+
+        /* Variaciones Temáticas de Nodos */
+        .n-rojo { border-color: var(--neon-captura); box-shadow: 0 0 40px rgba(255, 51, 102, 0.15); }
+        .n-rojo h2, .n-rojo li::before, .n-rojo .nodo-badge { color: var(--neon-captura); }
+        
+        .n-cian { border-color: var(--neon-vigilancia); box-shadow: 0 0 40px rgba(0, 229, 255, 0.15); }
+        .n-cian h2, .n-cian li::before, .n-cian .nodo-badge { color: var(--neon-vigilancia); }
+        
+        .n-amarillo { border-color: var(--neon-algoritmo); box-shadow: 0 0 40px rgba(255, 170, 0, 0.15); }
+        .n-amarillo h2, .n-amarillo li::before, .n-amarillo .nodo-badge { color: var(--neon-algoritmo); }
+        
+        .n-verde { border-color: var(--neon-revolucion); box-shadow: 0 0 40px rgba(0, 255, 102, 0.15); }
+        .n-verde h2, .n-verde li::before, .n-verde .nodo-badge { color: var(--neon-revolucion); }
+        
+        .n-purpura { border-color: var(--neon-negocio); box-shadow: 0 0 40px rgba(184, 0, 255, 0.15); }
+        .n-purpura h2, .n-purpura li::before, .n-purpura .nodo-badge { color: var(--neon-negocio); }
+
+        /* Modal Expansivo (Diseño 3 columnas) */
+        #modal-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        #modal-container.activo { opacity: 1; pointer-events: all; }
+        
+        .modal-content {
+            background: var(--bg-modal); width: 95%; max-width: 1800px; height: 92vh;
+            border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); 
+            position: relative; box-shadow: 0 40px 100px rgba(0,0,0,1);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        
+        .modal-header {
+            padding: 30px 40px 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .modal-close { 
+            position: absolute; top: 25px; right: 30px; font-size: 40px; 
+            color: var(--texto-secundario); cursor: pointer; background: none; border: none; 
+            transition: color 0.2s, transform 0.2s; z-index: 10;
+        }
+        .modal-close:active { color: #fff; transform: rotate(90deg); }
+        
+        .modal-title { font-family: var(--font-display); font-size: 40px; text-transform: uppercase; margin-bottom: 5px; }
+        .modal-chapter { font-size: 18px; color: var(--texto-secundario); letter-spacing: 2px; text-transform: uppercase;}
+
+        .modal-body {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px;
+            padding: 25px 40px; overflow-y: auto; flex-grow: 1;
+        }
+        
+        .modal-body::-webkit-scrollbar { width: 8px; }
+        .modal-body::-webkit-scrollbar-track { background: transparent; }
+        .modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 8px; border: 1px solid var(--bg-modal);}
+
+        .modal-col { display: flex; flex-direction: column; gap: 15px; }
+        .modal-subtitle { font-family: var(--font-display); font-size: 24px; color: #fff; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+        .modal-text { font-size: 17px; color: #cbd5e1; line-height: 1.5; text-align: justify; }
+        
+        .modal-box { 
+            background: rgba(0,0,0,0.6); padding: 25px; border-radius: 16px; 
+            border-left: 6px solid; height: 100%; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .m-tabla { width: 100%; border-collapse: collapse; margin-top: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; overflow: hidden;}
+        .m-tabla th { background: rgba(0,0,0,0.5); text-align: left; padding: 12px; color: #fff; font-family: var(--font-display); font-size: 16px; }
+        .m-tabla td { padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 14px; vertical-align: top;}
+        
+        @media (max-width: 1200px) { .modal-body { grid-template-columns: 1fr; } }
+
+        /* Popover para Satélites (En Lienzo) */
+        .sat-popover {
+            position: absolute; width: 450px; background: var(--bg-modal);
+            border: 2px solid; border-radius: 16px; padding: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 24;
+            backdrop-filter: blur(10px); transform-origin: top left;
+            animation: popoverIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default; pointer-events: auto;
+        }
+        .sat-popover h3 { font-family: var(--font-display); font-size: 24px; margin-bottom: 15px; text-transform: uppercase; }
+        .sat-popover-content { font-size: 16px; color: #cbd5e1; line-height: 1.6; }
+        .sat-popover-content p { margin-bottom: 10px; }
+        @keyframes popoverIn {
+            from { opacity: 0; transform: scale(0.8) translate(-20px, -20px); }
+            to { opacity: 1; transform: scale(1) translate(0, 0); }
+        }
+        
+        .quote-box {
+            font-style: italic; font-size: 18px; color: #fff; border-left: 4px solid; padding-left: 15px;
+            margin: 10px 0; text-align: left; font-family: var(--font-display);
+        }
+
+        .highlight-text {
+            color: #fff; font-weight: bold; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Overlay de Introducción -->
+    <div id="intro-overlay" onclick="iniciarExperiencia()">
+        <h1>Sistema Comprometido</h1>
+        <p>Toca la pantalla para descifrar la red</p>
+    </div>
+
+    <!-- Controles HUD -->
+    <div id="hud">
+        <button class="hud-btn" onclick="showAll()" title="Mostrar Todo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button>
+        <button class="hud-btn" onclick="zoom(-0.2)" title="Alejar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+        <button class="hud-btn" onclick="recenter()" title="Centrar al Smartphone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
+        <button class="hud-btn" onclick="zoom(0.2)" title="Acercar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+        <button class="hud-btn primary" onclick="toggleFullscreen()" title="Pantalla Completa"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+    </div>
+
+    <div id="viewport">
+        <div id="canvas">
+            
+            <!-- CAPA DE RUTAS Y CONEXIONES -->
+            <svg id="svg-layer">
+                <defs>
+                    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="5" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                </defs>
+
+                <!-- Conexiones físicas (Sensores al centro) -->
+                <path class="linea-sensor" d="M 3000 2250 L 1800 1200" />
+                <path class="linea-sensor" d="M 3000 2250 L 4200 1200" />
+                <path class="linea-sensor" d="M 3000 2250 L 4800 2250" />
+                <path class="linea-sensor" d="M 3000 2250 L 4200 3300" />
+                <path class="linea-sensor" d="M 3000 2250 L 1800 3300" />
+                <path class="linea-sensor" d="M 3000 2250 L 1200 2250" />
+
+                <!-- Bucle de Retroalimentación Sistémica -->
+                <path id="ruta-1" class="linea-bucle" stroke="var(--neon-captura)" d="M 1800 1200 Q 3000 800 4200 1200" /> 
+                <path id="ruta-2" class="linea-bucle" stroke="var(--neon-vigilancia)" d="M 4200 1200 Q 4800 1700 4800 2250" />
+                <path id="ruta-3" class="linea-bucle" stroke="var(--neon-algoritmo)" d="M 4800 2250 Q 4800 2800 4200 3300" />
+                <path id="ruta-4" class="linea-bucle" stroke="var(--neon-negocio)" d="M 4200 3300 Q 3000 3700 1800 3300" />
+                <path id="ruta-5" class="linea-bucle" stroke="var(--neon-captura)" d="M 1800 3300 Q 1200 2250 1800 1200" /> 
+                
+                <path id="ruta-6" class="linea-bucle" stroke="var(--neon-revolucion)" d="M 1200 2250 L 1800 1200" />
+                <path id="ruta-7" class="linea-bucle" stroke="var(--neon-revolucion)" d="M 1200 2250 L 4200 1200" opacity="0.3" />
+
+                <!-- Animación de Datos (Partículas) -->
+                <circle class="particula" r="10" fill="var(--neon-captura)"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#ruta-1"/></animateMotion></circle>
+                <circle class="particula" r="8" fill="#fff"><animateMotion dur="5s" repeatCount="indefinite" begin="2.5s"><mpath href="#ruta-1"/></animateMotion></circle>
+                <circle class="particula" r="10" fill="var(--neon-vigilancia)"><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#ruta-2"/></animateMotion></circle>
+                <circle class="particula" r="10" fill="var(--neon-algoritmo)"><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#ruta-3"/></animateMotion></circle>
+                <circle class="particula" r="10" fill="var(--neon-negocio)"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#ruta-4"/></animateMotion></circle>
+                <circle class="particula" r="10" fill="var(--neon-captura)"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#ruta-5"/></animateMotion></circle>
+
+                <!-- Etiquetas de Flujo -->
+                <g transform="translate(3000, 950)">
+                    <rect x="-140" y="-20" width="280" height="40" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-captura)">1. CAPTURA ATENCIONAL →</text>
+                </g>
+                <g transform="translate(4600, 1650)">
+                    <rect x="-150" y="-20" width="300" height="40" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-vigilancia)">2. PROCESAMIENTO OPAC →</text>
+                </g>
+                <g transform="translate(4600, 2850)">
+                    <rect x="-150" y="-20" width="300" height="40" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-algoritmo)">3. CENTRALIZACIÓN NUBE →</text>
+                </g>
+                <g transform="translate(3000, 3550)">
+                    <rect x="-150" y="-20" width="300" height="40" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-negocio)">4. DIRECCIONAMIENTO TRIBAL →</text>
+                </g>
+                <g transform="translate(1400, 2750)">
+                    <rect x="-120" y="-20" width="240" height="40" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-captura)">↺ REINSERCIÓN MIEDO</text>
+                </g>
+
+                <!-- Líneas de Satélites -->
+                <!-- Cap 1 -->
+                <path class="linea-subnodo" d="M 1800 1200 L 1500 850" />
+                <path class="linea-subnodo" d="M 1800 1200 L 2100 850" />
+                <!-- Cap 3 -->
+                <path class="linea-subnodo" d="M 4200 1200 L 3900 850" />
+                <path class="linea-subnodo" d="M 4200 1200 L 4500 850" />
+                <!-- Cap 4 -->
+                <path class="linea-subnodo" d="M 4800 2250 L 5250 1950" />
+                <path class="linea-subnodo" d="M 4800 2250 L 5250 2550" />
+                <!-- Cap 6 -->
+                <path class="linea-subnodo" d="M 4200 3300 L 4500 3650" />
+                <!-- Cap 7 -->
+                <path class="linea-subnodo" d="M 1800 3300 L 1500 3650" />
+                <!-- Cap 5 -->
+                <path class="linea-subnodo" d="M 1200 2250 L 750 1950" />
+                <path class="linea-subnodo" d="M 1200 2250 L 750 2550" />
+                <!-- Centro -->
+                <path class="linea-subnodo" d="M 3000 2250 L 3000 1850" />
+            </svg>
+
+            <!-- SATÉLITES INTERACTIVOS -->
+            <div class="satelite s-rojo" style="top: 850px; left: 1500px;" data-sat="saborizante"></div>
+            <div class="satelite s-rojo" style="top: 850px; left: 2100px;" data-sat="modeloFogg"></div>
+            
+            <div class="satelite s-cian" style="top: 850px; left: 3900px;" data-sat="legislacion"></div>
+            <div class="satelite s-cian" style="top: 850px; left: 4500px;" data-sat="citaSchmidt"></div>
+
+            <div class="satelite s-amarillo" style="top: 1950px; left: 5250px;" data-sat="drones"></div>
+            <div class="satelite s-amarillo" style="top: 2550px; left: 5250px;" data-sat="flickr"></div>
+
+            <div class="satelite s-purpura" style="top: 3650px; left: 4500px;" data-sat="plutonio"></div>
+
+            <div class="satelite s-rojo" style="top: 3650px; left: 1500px;" data-sat="franquicias"></div>
+
+            <div class="satelite s-verde" style="top: 1950px; left: 750px;" data-sat="napster"></div>
+            <div class="satelite s-verde" style="top: 2550px; left: 750px;" data-sat="eticaHacker"></div>
+
+            <div class="satelite s-blanco" style="top: 1850px; left: 3000px;" data-sat="bucleSistemico"></div>
+
+
+            <!-- NODOS PRINCIPALES -->
+            
+            <!-- EL TORNILLO MAESTRO (CENTRO) -->
+            <div class="nodo-smartphone" style="top: 2250px; left: 3000px;" data-id="centro">
+                <div class="sensor-halo"></div>
+                <div class="smartphone-body">
+                    <div class="smart-notch"></div>
+                    <div class="smart-screen">
+                        <h2>EL TORNILLO MAESTRO</h2>
+                        <p style="color: #fff; font-weight: bold; margin-bottom: 15px; font-size: 18px;">EL SMARTPHONE</p>
+                        <p>Anclaje físico de la infraestructura de dominación global.</p>
+                        <div style="margin-top: 20px; font-size: 12px; color: var(--neon-vigilancia); border: 1px solid var(--neon-vigilancia); padding: 5px 10px; border-radius: 10px;">
+                            14-16 Sensores Activos
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nodo n-rojo" style="top: 1200px; left: 1800px;" data-id="adiccion">
+                <div class="nodo-img-bg" style="background-image: url('adiccion_cerebro.png');"></div>
+                <div class="nodo-content">
+                    <h2>Capítulo 1</h2>
+                    <h3>Adicción</h3>
+                    <ul>
+                        <li>Condicionamiento operante (Skinner)</li>
+                        <li>Secuestro dopaminérgico del córtex prefrontal</li>
+                        <li>Trance cognitivo y recompensa variable</li>
+                    </ul>
+                    <div class="nodo-badge">Mecanismo: B.J. Fogg</div>
+                </div>
+            </div>
+
+            <div class="nodo n-cian" style="top: 1200px; left: 4200px;" data-id="vigilancia">
+                <div class="nodo-img-bg" style="background-image: url('vigilancia_ojo.png');"></div>
+                <div class="nodo-content">
+                    <h2>Capítulo 3</h2>
+                    <h3>Vigilancia</h3>
+                    <ul>
+                        <li>Orígenes militares de la red (ARPANET)</li>
+                        <li>Legislación pro-extracción de metadatos</li>
+                        <li>Predicción pasiva sin interacción consciente</li>
+                    </ul>
+                    <div class="nodo-badge">Vigilancia Persistente</div>
+                </div>
+            </div>
+
+            <div class="nodo n-amarillo" style="top: 2250px; left: 4800px;" data-id="algoritmos">
+                <div class="nodo-img-bg" style="background-image: url('algoritmo_codigo.png');"></div>
+                <div class="nodo-content">
+                    <h2>Capítulo 4</h2>
+                    <h3>Algoritmos</h3>
+                    <ul>
+                        <li>Lavado matemático (Mathwashing)</li>
+                        <li>Precios dinámicos por perfil biométrico</li>
+                        <li>Delegación de letalidad en cajas negras</li>
+                    </ul>
+                    <div class="nodo-badge">Falsa Neutralidad</div>
+                </div>
+            </div>
+
+            <div class="nodo n-purpura" style="top: 3300px; left: 4200px;" data-id="negocio">
+                <div class="nodo-img-bg" style="background-image: url('algoritmo_codigo.png'); filter: hue-rotate(90deg);"></div>
+                <div class="nodo-content">
+                    <h2>Capítulo 6</h2>
+                    <h3>El modelo de negocio</h3>
+                    <ul>
+                        <li>Data Brokers y mercado de identidades</li>
+                        <li>Centralización masiva en Nube Pública</li>
+                        <li>Impacto ecológico del procesamiento</li>
+                    </ul>
+                    <div class="nodo-badge">Modelo Extractivo</div>
+                </div>
+            </div>
+
+            <div class="nodo n-rojo" style="top: 3300px; left: 1800px; border-color: var(--neon-captura);" data-id="manipulacion">
+                <div class="nodo-img-bg" style="background-image: url('adiccion_cerebro.png'); filter: hue-rotate(-50deg);"></div>
+                <div class="nodo-content">
+                    <h2 style="color: #ff0044;">Capítulo 7</h2>
+                    <h3>Manipulación</h3>
+                    <ul>
+                        <li>Convergencia Orwell (Miedo) + Huxley (Apatía)</li>
+                        <li>Desinformación microsegmentada (OCEAN)</li>
+                        <li>Tribalización algorítmica y odio rentable</li>
+                    </ul>
+                    <div class="nodo-badge" style="color: #ff0044; border-color:#ff0044;">Manipulación de Masas</div>
+                </div>
+            </div>
+
+            <div class="nodo n-verde" style="top: 2250px; left: 1200px;" data-id="revolucion">
+                <div class="nodo-img-bg" style="background-image: url('revolucion_escudo.png');"></div>
+                <div class="nodo-content">
+                    <h2>Capítulo 5</h2>
+                    <h3>Revolución</h3>
+                    <ul>
+                        <li>Demolición del protocolo distribuido (P2P)</li>
+                        <li>Imposición de suscripciones en la nube</li>
+                        <li>Exposición voluntaria de la disidencia</li>
+                    </ul>
+                    <div class="nodo-badge">Ética Hacker Derrotada</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL EXPANSIVO PRINCIPAL -->
+    <div id="modal-container">
+        <div class="modal-content">
+            <button class="modal-close" onpointerdown="event.preventDefault(); cerrarModal('modal-container')">×</button>
+            <div class="modal-header">
+                <h3 class="modal-chapter" id="m-chapter">CAPÍTULO X</h3>
+                <h1 class="modal-title" id="m-titulo">Título del Nodo</h1>
+            </div>
+            
+            <div class="modal-body" id="m-body-normal">
+                <div class="modal-col">
+                    <h3 class="modal-subtitle">Fundamento Teórico</h3>
+                    <p class="modal-text" id="m-proceso">Texto proceso...</p>
+                </div>
+                <div class="modal-col">
+                    <div class="modal-box" id="caja-caso">
+                        <h3 class="modal-subtitle" style="border:none; margin-bottom: 0;">Evidencia Empírica</h3>
+                        <p class="modal-text" id="m-caso" style="color: #fff; margin-top: 15px;">Texto caso...</p>
+                    </div>
+                </div>
+                <div class="modal-col" id="columna-tabla">
+                    <h3 class="modal-subtitle">Estructura del Sistema</h3>
+                    <div id="m-tabla-container"></div>
+                </div>
+            </div>
+            
+            <!-- Estructura Alternativa para las Conclusiones -->
+            <div class="modal-body" id="m-body-centro" style="display: none; grid-template-columns: 1fr;">
+                <div class="modal-col">
+                    <div id="m-conclusiones-html"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DATOS DE SATÉLITES ---
+        const datosSatelites = {
+            saborizante: {
+                titulo: "El Oligopolio Saborizante",
+                color: "var(--neon-captura)",
+                contenido: `
+                    <p>Las bases del diseño digital nacen de la industria alimentaria.</p>
+                    <p>Cuatro corporaciones (<span class="highlight-text">Givaudan, Firmenich, IFF, Symrise</span>) dominan un mercado global de miles de millones, creando compuestos que activan el consumo compulsivo sin saciedad real.</p>
+                    <div class="quote-box">"La naturaleza no cíclica de este negocio de consumo masivo nos aísla de las crisis económicas mundiales."<br><span style="font-size:16px; color:var(--texto-secundario); font-style:normal;">— Peter Wullschleger (Givaudan, 2012)</span></div>
+                    <p><i>Dato adicional:</i> La Universidad de Washington demostró que aromas difuminados cítricos pueden incrementar ventas hasta un 20%, evidenciando cómo los estímulos invisibles guían al consumidor.</p>
+                `
+            },
+            modeloFogg: {
+                titulo: "El Modelo B.J. Fogg",
+                color: "var(--neon-captura)",
+                contenido: `
+                    <table class="m-tabla" style="margin:0;">
+                        <tr><th colspan="2">Estructura del Diseño Persuasivo</th></tr>
+                        <tr><td>Motivación</td><td>Fuerzas impulsoras divididas en ejes: Sensación (placer/dolor), Anticipación (esperanza/miedo) y Pertenencia (aceptación/FOMO).</td></tr>
+                        <tr><td>Habilidad</td><td>Reducción de fricción. Interfaces intuitivas optimizadas por Apple en 2007.</td></tr>
+                        <tr><td>Disparador</td><td>Notificaciones push y vibraciones como señales ineludibles.</td></tr>
+                    </table>
+                `
+            },
+            legislacion: {
+                titulo: "La Legalización del Panóptico",
+                color: "var(--neon-vigilancia)",
+                contenido: `
+                    <p>El Estado adapta su código penal a las corporaciones para institucionalizar el espionaje masivo de sus ciudadanos.</p>
+                    <br>
+                    <p><span class="highlight-text">Investigatory Powers Act (2016, UK)</span>: Legaliza el hackeo masivo y la recolección de comunicaciones.</p>
+                    <p><span class="highlight-text">Assistance and Access Act (2018, AUS)</span>: Obliga a las tecnológicas a debilitar el cifrado de extremo a extremo.</p>
+                `
+            },
+            citaSchmidt: {
+                titulo: "La Predicción Inconsciente",
+                color: "var(--neon-vigilancia)",
+                contenido: `
+                    <div class="quote-box">"Sabemos dónde estás. Sabemos dónde has estado. Sabemos más o menos en qué estás pensando."<br><span style="font-size:16px; color:var(--texto-secundario); font-style:normal;">— Eric Schmidt (CEO Google, 2010)</span></div>
+                    <p>El sistema ha llegado a un nivel de penetración tal en la esfera íntima, que la monitorización pasiva ya predice rutinas completas sin requerir ninguna interacción consciente del usuario.</p>
+                `
+            },
+            flickr: {
+                titulo: "Mathwashing: El Caso Flickr",
+                color: "var(--neon-algoritmo)",
+                contenido: `
+                    <p>El <strong>Deus Ex Machina corporativo</strong> ("fue un error del algoritmo") justifica decisiones vejatorias programadas desde el inicio.</p>
+                    <p>Un caso crítico fue el software de reconocimiento visual de Flickr, que clasificaba <strong>algorítmicamente</strong> a personas de raza negra etiquetándolas como "monos". El algoritmo ofusca e higieniza el sesgo clasista y racista de sus programadores detrás de matemáticas "neutrales".</p>
+                `
+            },
+            drones: {
+                titulo: "La Guerra Automatizada",
+                color: "var(--neon-algoritmo)",
+                contenido: `
+                    <p>La letalidad extrema del procesamiento de metadatos celulares (geolocalización pasiva).</p>
+                    <table class="m-tabla">
+                        <tr><th>Administración</th><th>Impacto del Sistema de Drones</th></tr>
+                        <tr><td>Barack Obama</td><td>Autorizó +500 ataques letales fuera de zonas de conflicto (10x más que G.W. Bush).</td></tr>
+                        <tr><td>Donald Trump</td><td>Incrementó 5 veces la tasa de ejecuciones selectivas predictivas sobre Obama.</td></tr>
+                    </table>
+                `
+            },
+            eticaHacker: {
+                titulo: "La Ética Hacker de Steven Levy",
+                color: "var(--neon-revolucion)",
+                contenido: `
+                    <table class="m-tabla" style="margin:0;">
+                        <tr><th>Principio Original</th><th>Realidad Feudal Digital</th></tr>
+                        <tr><td>Acceso ilimitado a equipos</td><td>Bloqueo de reparación por diseño.</td></tr>
+                        <tr><td>La info debe ser libre</td><td>Suscripciones y muros de pago masivos.</td></tr>
+                        <tr><td>Descentralización total</td><td>Dominio de la Nube (AWS/Alibaba).</td></tr>
+                        <tr><td>Ordenadores para mejorar</td><td>Armas de manipulación masiva.</td></tr>
+                    </table>
+                `
+            },
+            napster: {
+                titulo: "El Origen: Arquitectura P2P",
+                color: "var(--neon-revolucion)",
+                contenido: `
+                    <p>La hegemonía actual no era el camino inevitable.</p>
+                    <p>Sistemas de intercambio distribuido como <span class="highlight-text">Napster</span> demostraron que era técnicamente posible conectar ciudadanos sin intermediación comercial. La industria discográfica (<span class="highlight-text">RIAA</span>) lo clausuró judicialmente en 2001.</p>
+                    <p>Sobre sus ruinas, Steve Jobs impuso el jardín amurallado (App Store, iTunes) y Tim O'Reilly legitimó la capa de servicios centralizados con el concepto de <span class="highlight-text">"Web 2.0"</span>, subordinando al usuario a servidores corporativos para siempre.</p>
+                `
+            },
+            plutonio: {
+                titulo: "El Plutonio Informacional",
+                color: "var(--neon-negocio)",
+                contenido: `
+                    <div class="quote-box" style="border-color: var(--neon-negocio);">"El Big Data en estado crudo es material inestable, contaminante y peligroso para la sociedad; pero si se le contiene y procesa, otorga el poder de iluminar civilizaciones."<br><span style="font-size:16px; color:var(--texto-secundario); font-style:normal;">— Robert Kirkpatrick (UN Global Pulse)</span></div>
+                    <p>Las firmas de Silicon Valley operan como refinadoras privadas de este plutonio (Data Brokers). Por eso Facebook compró Oculus: colonizar entornos 3D asegura respuestas pupilares y corporales ineludibles para acumular más plutonio sin interferencia física.</p>
+                `
+            },
+            franquicias: {
+                titulo: "Franquicias Ideológicas",
+                color: "var(--neon-captura)",
+                contenido: `
+                    <p>La infraestructura de propaganda opera de manera coordinada a nivel global mediante la desinformación computacional.</p>
+                    <p>Agentes políticos intercambian retórica y algoritmos de viralización optimizados para desestabilizar la democracia.</p>
+                    <p><span class="highlight-text">"Brasil Primeiro"</span>, <span class="highlight-text">"España lo primero"</span> y <span class="highlight-text">"France First"</span> son traducciones literales de la logística iniciada con "America First", promoviendo regímenes neofascistas apoyados en el odio y el aislamiento tribal.</p>
+                `
+            },
+            bucleSistemico: {
+                titulo: "El Bucle de Retroalimentación",
+                color: "var(--neon-centro)",
+                contenido: `
+                    <ol style="text-align: left; margin-left: 20px; line-height: 1.8; color: #cbd5e1; font-size: 18px;">
+                        <li><strong style="color:var(--neon-captura);">Captura Atencional:</strong> Adicción mantiene el teléfono activo.</li>
+                        <li><strong style="color:var(--neon-vigilancia);">Procesamiento:</strong> Telemetría pasiva enviada a algoritmos opacos de mathwashing.</li>
+                        <li><strong style="color:var(--neon-algoritmo);">Centralización:</strong> Ecosistemas amurallados fuerzan el uso de monopolios de Nube.</li>
+                        <li><strong style="color:var(--neon-negocio);">Direccionamiento:</strong> El Plutonio digital se vende a propagandistas que inyectan miedo, reiniciando la adicción al teléfono.</li>
+                    </ol>
+                `
+            }
+        };
+
+        // --- BASE DE DATOS DE CAPÍTULOS (PRINCIPALES) ---
+        const datosCapitulos = {
+            centro: {
+                chapter: "Núcleo del Sistema y Conclusión Final",
+                titulo: "El Tornillo Maestro",
+                color: "var(--neon-centro)",
+                htmlCompleto: `
+                    <div style="display:flex; gap: 40px; margin-bottom: 10px;">
+                        <div style="flex:1;">
+                            <h3 class="modal-subtitle">El Mecanismo Base</h3>
+                            <p class="modal-text">La red global no es neutra, sino la infraestructura de vigilancia más vasta construida. En el centro geométrico se ubica el 'tornillo maestro': el teléfono móvil.</p>
+                            <p class="modal-text" style="margin-top:10px;">A diferencia de distopías históricas que imponían aparatos por la fuerza, el capitalismo de plataformas logró que los ciudadanos adquieran sus herramientas de control con su propio dinero y las transporten voluntariamente.</p>
+                            <table class="m-tabla" style="margin-top:15px;">
+                                <tr><th>Dimensión</th><th>Función del Smartphone</th></tr>
+                                <tr><td>Adicción</td><td>Soporte material del secuestro dopaminérgico.</td></tr>
+                                <tr><td>Vigilancia</td><td>Registro ambiental/geográfico ininterrumpido (16 sensores).</td></tr>
+                                <tr><td>Extractivismo</td><td>Generación pasiva de huella digital para Brokers.</td></tr>
+                                <tr><td>Manipulación</td><td>Canal psicométrico de propaganda personalizada.</td></tr>
+                            </table>
+                        </div>
+                        <div style="flex:1;">
+                            <div class="modal-box" style="border-color: var(--neon-revolucion);">
+                                <h3 class="modal-subtitle" style="border:none;">Conclusión: El Conflicto de Soberanía</h3>
+                                <div class="quote-box" style="border-color: var(--neon-revolucion); font-size: 22px;">
+                                    "Las herramientas del poder nunca servirán para desmantelar el poder."<br>
+                                    <span style="font-size:16px; color:var(--texto-secundario); font-style:normal;">— Audre Lorde</span>
+                                </div>
+                                <p class="modal-text" style="color:#fff;">La tecnología contemporánea no es un problema "técnico" o de "responsabilidad individual de consumo".</p>
+                                <ul style="margin-top:10px; color:#cbd5e1; font-size:16px; line-height:1.5; padding-left:20px;">
+                                    <li style="margin-bottom:8px;">La privacidad "cosmética" es una prolongación de la ofuscación de Silicon Valley.</li>
+                                    <li style="margin-bottom:8px;">Es imposible desmantelar la vigilancia sin destruir el modelo financiero que la sustenta (venta de conductas futuras).</li>
+                                    <li style="color:var(--neon-revolucion); font-weight:bold;">SOLUCIÓN: La nacionalización, descentralización comunitaria y la "expropiación social" del plutonio informacional.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            adiccion: {
+                chapter: "Capítulo 1",
+                titulo: "Adicción",
+                proceso: "El control inicia modificando la biología. Silicon Valley imita a la industria alimentaria (saborizantes) que crea consumo compulsivo sin nutrición. Aplicando el modelo de condicionamiento operante de B.F. Skinner, estructuran un 'circuito de refuerzo continuo' mediante la recompensa variable (pull-to-refresh), imitando a una máquina tragaperras.",
+                caso: "Cuando el sistema se satura de dopamina, el cerebro entra en abstinencia y ansiedad. Las plataformas instrumentalizan la indignación moral como 'la heroína de las redes', sumiendo al usuario en 'el agujero del conejo' sin fondo ni pasado. Los ingenieros más brillantes dedican sus vidas a optimizar el % de clics.",
+                tablaHtml: `<table class="m-tabla"><tr><th colspan="2">Estructura Persuasiva Básica</th></tr><tr><td>Skinner</td><td>Circuito cerrado: Reclamo → Acción → Recompensa variable.</td></tr><tr><td>Fogg</td><td>Motivación + Habilidad + Disparador = Hábito forzado.</td></tr></table>`,
+                color: "var(--neon-captura)"
+            },
+            vigilancia: {
+                chapter: "Capítulo 3",
+                titulo: "Vigilancia",
+                proceso: "Internet no es incorpórea; es infraestructura física militarizada. El control se ejerce centralizando los metadatos. El panóptico opera amparado por Estados que adaptan leyes penales para legalizar la vigilancia corporativa, convergiendo intereses públicos y privados para monitorizar poblaciones enteras.",
+                caso: "Ejemplo estatal: El Crédito Social de China usa más de 200 millones de cámaras de reconocimiento facial para penalizar conductas públicas. Ejemplo privado: Palantir Technologies asocia historiales médicos y bancarios bajo más de 2.000 contratos de seguridad estatal occidentales.",
+                tablaHtml: `<table class="m-tabla"><tr><th>Nivel de Control</th><th>Entidad / Herramienta</th></tr><tr><td>Nivel Físico</td><td>Cables submarinos, Data Centers blindados.</td></tr><tr><td>Nivel Protocolo</td><td>Metadatos (origen, destino, hora, itinerario).</td></tr></table>`,
+                color: "var(--neon-vigilancia)"
+            },
+            algoritmos: {
+                chapter: "Capítulo 4",
+                titulo: "Algoritmos",
+                proceso: "Silicon Valley presenta al algoritmo como una entidad objetiva, un ejercicio de 'mathwashing' para legitimar conductas abusivas bajo una pátina de matemáticas limpias. En realidad, el algoritmo es una opacidad estructural que traslada los prejuicios y prioridades comerciales de sus programadores a la vida pública de forma invisible.",
+                caso: "Casos domésticos: Algoritmos de precios dinámicos que exprimen tarifas según tu perfil o el nivel de batería de tu móvil. Casos críticos: La guerra inteligente automatizada con Drones.",
+                tablaHtml: `<table class="m-tabla"><tr><th>Impacto Algorítmico</th><th>Consecuencia de la Opacidad</th></tr><tr><td>Precios Dinámicos</td><td>Explotación del excedente del consumidor.</td></tr><tr><td>Guerra Automatizada</td><td>Delegación de vida/muerte en el cálculo probabilístico.</td></tr></table>`,
+                color: "var(--neon-algoritmo)"
+            },
+            revolucion: {
+                chapter: "Capítulo 5",
+                titulo: "Revolución",
+                proceso: "La hegemonía de Silicon Valley no era inevitable. La red original (TCP/IP) y el P2P descentralizaban el poder. La contrarrevolución impuso el 'jardín amurallado', donde renunciamos a la propiedad local a cambio de suscripciones y conveniencia en la nube, demoliendo la estructura distribuida.",
+                caso: "Como señala Evgeny Morozov, esta centralización es fatal para la disidencia. Las dictaduras ya no necesitan meses de torturas para mapear resistencias; simplemente descargan la red de amigos de Facebook, donde los activistas exponen voluntariamente sus conexiones sociales estructuradas y legibles.",
+                tablaHtml: `<table class="m-tabla"><tr><th>Ética Hacker</th><th>Violación Actual</th></tr><tr><td>Info Libre</td><td>Muros de pago y patentes.</td></tr><tr><td>Descentralización</td><td>Tráfico de Nube concentrado.</td></tr></table>`,
+                color: "var(--neon-revolucion)"
+            },
+            negocio: {
+                chapter: "Capítulo 6",
+                titulo: "El modelo de negocio",
+                proceso: "El Big Data crudo es tóxico. Las tecnológicas operan como refinadoras privadas que extraen este combustible de la intimidad ciudadana. Los Data Brokers cruzan perfiles (compras, salud, navegación) creando identidades digitales legibles únicas. Toda esta infraestructura requiere centralización absoluta.",
+                caso: "El mercado se sostiene en el duopolio del almacenamiento: AWS en Occidente y Alibaba Cloud en Asia. Facebook compró WhatsApp e Instagram para fusionar metadatos. Oculus fue adquirido para colonizar entornos 3D.",
+                tablaHtml: `<table class="m-tabla"><tr><th>Actor del Monopolio</th><th>Impacto Estructural</th></tr><tr><td>AWS / Alibaba</td><td>Dominio absoluto de la infraestructura global.</td></tr><tr><td>Data Brokers</td><td>Cruzan tarjetas, salud y GPS de forma opaca.</td></tr></table>`,
+                color: "var(--neon-negocio)"
+            },
+            manipulacion: {
+                chapter: "Capítulo 7",
+                titulo: "Manipulación",
+                proceso: "Fase final del sistema: intervención sobre la voluntad democrática. Convergen Orwell (vigilancia castigadora) y Huxley (adormecimiento trivial). La propaganda moderna no busca convencer ideológicamente, sino dinamitar la verdad fáctica imponiendo una tribalización algorítmica y burbujas de filtro radicalizadas que rentabilizan el odio.",
+                caso: "Cambridge Analytica sustrajo 87M de perfiles de Facebook para categorizar votantes según el modelo OCEAN. Microsegmentaron anuncios para alterar el Brexit y EE.UU. Hoy se repite globalmente a través de las franquicias ideológicas.",
+                tablaHtml: `<table class="m-tabla"><tr><th>Estrategia Psicopolítica</th><th>Resultado Democrático</th></tr><tr><td>Burbujas de Filtro</td><td>Aislamiento social y confirmación de prejuicios.</td></tr><tr><td>Microsegmentación</td><td>Explotación individual del miedo y agresividad.</td></tr></table>`,
+                color: "var(--neon-captura)"
+            }
+        };
+
+        // --- LÓGICA DE MOVIMIENTO, ZOOM Y MULTITOUCH ---
+        const viewport = document.getElementById('viewport');
+        const canvas = document.getElementById('canvas');
+        
+        let scale = 1;
+        let currentX = -(3000 - window.innerWidth/2);
+        let currentY = -(2250 - window.innerHeight/2);
+        
+        let isDragging = false, startX, startY;
+        let initialPinchDistance = null;
+        let initialScale = 1;
+        let initialPinchMidX = 0, initialPinchMidY = 0;
+        let initialCurrentX = 0, initialCurrentY = 0;
+        let activePointers = [];
+
+        function updateTransform() {
+            canvas.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
+        }
+        
+        updateTransform();
+
+        function iniciarExperiencia() {
+            const intro = document.getElementById('intro-overlay');
+            intro.style.opacity = '0';
+            setTimeout(() => intro.style.display = 'none', 1000);
+            // Zoom de entrada suave: deshabilitar transición para el frame inicial y luego animar
+            canvas.classList.add('sin-transicion');
+            scale = 0.5; updateTransform();
+            requestAnimationFrame(() => {
+                canvas.classList.remove('sin-transicion');
+                scale = 0.8; updateTransform();
+            });
+        }
+
+        let dragThreshold = false;
+        let dragStartX = 0, dragStartY = 0;
+        const DRAG_MIN_PX = 8; // Mínimo de píxeles reales para considerar un desplazamiento intencional
+
+        viewport.addEventListener('pointerdown', (e) => {
+            if(document.getElementById('modal-container').classList.contains('activo')) return;
+            
+            if(e.target.closest('.hud-btn')) return; // No iniciar arrastre si se toca un botón
+
+            activePointers.push(e);
+            if(activePointers.length === 1) {
+                isDragging = true;
+                dragThreshold = false;
+                dragStartX = e.clientX;
+                dragStartY = e.clientY;
+                startX = e.clientX - currentX;
+                startY = e.clientY - currentY;
+            } else if (activePointers.length === 2) {
+                isDragging = false;
+                dragThreshold = true;
+                initialPinchDistance = Math.hypot(
+                    activePointers[0].clientX - activePointers[1].clientX,
+                    activePointers[0].clientY - activePointers[1].clientY
+                );
+                initialScale = scale;
+                initialPinchMidX = (activePointers[0].clientX + activePointers[1].clientX) / 2;
+                initialPinchMidY = (activePointers[0].clientY + activePointers[1].clientY) / 2;
+                initialCurrentX = currentX;
+                initialCurrentY = currentY;
+            }
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            const index = activePointers.findIndex(p => p.pointerId === e.pointerId);
+            if (index !== -1) {
+                activePointers[index] = e;
+                // Activar dragThreshold solo si el dedo se movió más de DRAG_MIN_PX píxeles
+                if (isDragging && !dragThreshold) {
+                    const dx = e.clientX - dragStartX;
+                    const dy = e.clientY - dragStartY;
+                    if (Math.hypot(dx, dy) > DRAG_MIN_PX) dragThreshold = true;
+                }
+            }
+
+            if (activePointers.length === 1 && isDragging) {
+                currentX = e.clientX - startX;
+                currentY = e.clientY - startY;
+                updateTransform();
+            } else if (activePointers.length === 2) {
+                const currentDistance = Math.hypot(
+                    activePointers[0].clientX - activePointers[1].clientX,
+                    activePointers[0].clientY - activePointers[1].clientY
+                );
+                const zoomFactor = currentDistance / initialPinchDistance;
+                scale = Math.min(Math.max(0.2, initialScale * zoomFactor), 2);
+                
+                const currentMidX = (activePointers[0].clientX + activePointers[1].clientX) / 2;
+                const currentMidY = (activePointers[0].clientY + activePointers[1].clientY) / 2;
+                
+                const canvasMidX = (initialPinchMidX - initialCurrentX) / initialScale;
+                const canvasMidY = (initialPinchMidY - initialCurrentY) / initialScale;
+                
+                currentX = currentMidX - canvasMidX * scale;
+                currentY = currentMidY - canvasMidY * scale;
+                
+                updateTransform();
+            }
+        });
+
+        window.addEventListener('pointerup', removePointer);
+        window.addEventListener('pointercancel', removePointer);
+
+        function removePointer(e) {
+            activePointers = activePointers.filter(p => p.pointerId !== e.pointerId);
+            if (activePointers.length < 2) initialPinchDistance = null;
+            if (activePointers.length === 0) isDragging = false;
+        }
+
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            zoom(e.deltaY * -0.001, e.clientX, e.clientY);
+        }, { passive: false });
+
+        function zoom(amount, originX = window.innerWidth / 2, originY = window.innerHeight / 2) {
+            const oldScale = scale;
+            scale = Math.min(Math.max(0.2, scale + amount), 2);
+            
+            const canvasOriginX = (originX - currentX) / oldScale;
+            const canvasOriginY = (originY - currentY) / oldScale;
+            
+            currentX = originX - canvasOriginX * scale;
+            currentY = originY - canvasOriginY * scale;
+            
+            updateTransform();
+        }
+
+        function showAll() {
+            // El contenido real se agrupa en un área de aprox 4800x3200 píxeles centrada en el lienzo.
+            const newScaleX = window.innerWidth / 4800;
+            const newScaleY = window.innerHeight / 3200;
+            scale = Math.max(0.1, Math.min(newScaleX, newScaleY));
+            
+            currentX = -(3000 * scale - window.innerWidth/2);
+            currentY = -(2250 * scale - window.innerHeight/2);
+            updateTransform();
+        }
+
+        function recenter() {
+            scale = 0.8;
+            currentX = -(3000 * scale - window.innerWidth/2);
+            currentY = -(2250 * scale - window.innerHeight/2);
+            updateTransform();
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            } else { document.exitFullscreen(); }
+        }
+
+        // --- LÓGICA DE MODALES PRINCIPALES Y SATÉLITES ---
+        const nodos = document.querySelectorAll('.nodo, .nodo-smartphone');
+        const satelites = document.querySelectorAll('.satelite');
+        const modalContainer = document.getElementById('modal-container');
+        
+        // Nodos Principales
+        nodos.forEach(nodo => {
+            nodo.addEventListener('click', (e) => {
+                if (dragThreshold) return; 
+                
+                const id = nodo.getAttribute('data-id');
+                const info = datosCapitulos[id];
+
+                // Cerrar cualquier popover de satélite abierto para no manchar el fondo
+                document.querySelectorAll('.sat-popover').forEach(p => p.remove());
+                satelites.forEach(s => s.style.animationPlayState = 'running');
+
+                document.getElementById('m-chapter').textContent = info.chapter;
+                document.getElementById('m-chapter').style.color = info.color;
+                document.getElementById('m-titulo').textContent = info.titulo;
+                document.getElementById('m-titulo').style.color = info.color;
+                
+                if (id === 'centro') {
+                    // Cargar vista de centro con Conclusiones
+                    document.getElementById('m-body-normal').style.display = 'none';
+                    document.getElementById('m-body-centro').style.display = 'grid';
+                    document.getElementById('m-conclusiones-html').innerHTML = info.htmlCompleto;
+                } else {
+                    document.getElementById('m-body-centro').style.display = 'none';
+                    document.getElementById('m-body-normal').style.display = 'grid';
+                    document.getElementById('m-proceso').textContent = info.proceso;
+                    document.getElementById('m-caso').textContent = info.caso;
+                    document.getElementById('caja-caso').style.borderColor = info.color;
+                    document.getElementById('m-tabla-container').innerHTML = info.tablaHtml;
+                }
+                
+                modalContainer.classList.add('activo');
+                canvas.classList.add('desenfocado');
+            });
+        });
+
+        satelites.forEach((sat, index) => {
+            sat.style.animationDelay = `${index * -0.7}s`;
+            sat.addEventListener('click', (e) => {
+                if (dragThreshold) return; 
+                const id = sat.getAttribute('data-sat');
+                const popoverId = `popover-${id}`;
+                const existingPopover = document.getElementById(popoverId);
+
+                if (existingPopover) {
+                    existingPopover.remove();
+                    sat.style.animationPlayState = 'running';
+                    return;
+                }
+
+                document.querySelectorAll('.sat-popover').forEach(p => p.remove());
+                satelites.forEach(s => s.style.animationPlayState = 'running');
+
+                const info = datosSatelites[id];
+                const popover = document.createElement('div');
+                popover.id = popoverId;
+                popover.className = 'sat-popover';
+                popover.style.borderColor = info.color;
+                
+                const top = parseInt(sat.style.top);
+                const left = parseInt(sat.style.left);
+                popover.style.top = `${top - 20}px`;
+                popover.style.left = `${left + 35}px`;
+                
+                popover.innerHTML = `
+                    <h3 style="color:${info.color}">${info.titulo}</h3>
+                    <div class="sat-popover-content">${info.contenido}</div>
+                `;
+                
+                popover.addEventListener('pointerdown', ev => ev.stopPropagation());
+                popover.addEventListener('click', ev => ev.stopPropagation());
+                
+                document.getElementById('canvas').appendChild(popover);
+                sat.style.animationPlayState = 'paused';
+            });
+        });
+
+        function cerrarModal(id) {
+            document.getElementById(id).classList.remove('activo');
+            if(id === 'modal-container') canvas.classList.remove('desenfocado');
+        }
+
+        viewport.addEventListener('click', (e) => {
+            if (dragThreshold || e.target.closest('.satelite') || e.target.closest('.sat-popover')) return;
+            document.querySelectorAll('.sat-popover').forEach(p => p.remove());
+            satelites.forEach(s => s.style.animationPlayState = 'running');
+        });
+
+        modalContainer.addEventListener('pointerdown', (e) => { if (e.target === modalContainer) cerrarModal('modal-container'); });
+        
+        // Prevenir menú contextual en pantallas táctiles (toque prolongado)
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        window.addEventListener('load', recenter);
+        window.addEventListener('resize', recenter);
+
+    </script>
+</body>
+</html>
