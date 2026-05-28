@@ -119,9 +119,27 @@
         
         .etiqueta-flujo { fill: #fff; font-family: var(--font-display); font-size: 22px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.8)); }
         .etiqueta-bg { fill: rgba(10,14,20,0.8); stroke: var(--texto-mutado); stroke-width: 1; rx: 15; }
+        .etiqueta-subtexto { font-family: var(--font-body); font-size: 14px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; opacity: 0.9; }
 
         @keyframes flujoDatos { to { stroke-dashoffset: -60; } }
         .particula { fill: #fff; filter: drop-shadow(0 0 12px #fff); }
+
+        /* Hologramas Decorativos */
+        .holograma {
+            position: absolute; width: 140px; height: 140px;
+            margin-left: -70px; margin-top: -70px;
+            pointer-events: none; z-index: 1; /* Detrás de las tarjetas */
+            opacity: 0.25; 
+            display: flex; justify-content: center; align-items: center;
+        }
+        .holograma svg { width: 100%; height: 100%; stroke-width: 1.5; }
+        .holo-pulse { animation: holoPulse 4s infinite alternate ease-in-out; }
+        .holo-spin { animation: holoSpin 20s linear infinite; }
+        .holo-float { animation: holoFloat 6s infinite ease-in-out; }
+        
+        @keyframes holoPulse { 0% { transform: scale(0.9); opacity: 0.15; } 100% { transform: scale(1.1); opacity: 0.35; filter: drop-shadow(0 0 15px currentColor); } }
+        @keyframes holoSpin { 100% { transform: rotate(360deg); } }
+        @keyframes holoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
 
         /* El Tornillo Maestro (Centro 3D) */
         .nodo-smartphone {
@@ -376,24 +394,29 @@
 
                 <!-- Etiquetas de Flujo -->
                 <g transform="translate(3000, 950)">
-                    <rect x="-140" y="-20" width="280" height="40" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-captura)">1. CAPTURA ATENCIONAL →</text>
+                    <rect x="-220" y="-28" width="440" height="65" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-captura)">1. CAPTURA ATENCIONAL →</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">El teléfono secuestra la dopamina. La atención es materia prima.</text>
                 </g>
                 <g transform="translate(4600, 1650)">
-                    <rect x="-150" y="-20" width="300" height="40" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-vigilancia)">2. PROCESAMIENTO OPAC →</text>
+                    <rect x="-250" y="-28" width="500" height="65" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-vigilancia)">2. PROCESAMIENTO OPACO →</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los metadatos van a algoritmos opacos que prevén conductas futuras.</text>
                 </g>
                 <g transform="translate(4600, 2850)">
-                    <rect x="-150" y="-20" width="300" height="40" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-algoritmo)">3. CENTRALIZACIÓN NUBE →</text>
+                    <rect x="-270" y="-28" width="540" height="65" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-algoritmo)">3. CENTRALIZACIÓN NUBE →</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los perfiles se consolidan en monopolios (AWS). El usuario pierde control.</text>
                 </g>
                 <g transform="translate(3000, 3550)">
-                    <rect x="-150" y="-20" width="300" height="40" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-negocio)">4. DIRECCIONAMIENTO TRIBAL →</text>
+                    <rect x="-250" y="-28" width="500" height="65" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-negocio)">4. DIRECCIONAMIENTO TRIBAL →</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los datos refinados se venden a propagandistas. El miedo reinicia el ciclo.</text>
                 </g>
                 <g transform="translate(1400, 2750)">
-                    <rect x="-120" y="-20" width="240" height="40" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="2" fill="var(--neon-captura)">↺ REINSERCIÓN MIEDO</text>
+                    <rect x="-220" y="-28" width="440" height="65" class="etiqueta-bg"/>
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-captura)">↺ REINSERCIÓN MIEDO</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">La indignación algorítmica fuerza al usuario de vuelta al teléfono.</text>
                 </g>
 
                 <!-- Líneas de Satélites -->
@@ -537,6 +560,40 @@
                     </ul>
                     <div class="nodo-badge">Ética Hacker Derrotada</div>
                 </div>
+            </div>
+
+            <!-- HOLOGRAMAS DECORATIVOS -->
+            <div class="holograma holo-pulse" style="top: 900px; left: 1800px; color: var(--neon-captura);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+                </svg>
+            </div>
+            <div class="holograma holo-float" style="top: 900px; left: 4200px; color: var(--neon-vigilancia);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+            </div>
+            <div class="holograma holo-spin" style="top: 2250px; left: 5150px; color: var(--neon-algoritmo);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+            </div>
+            <div class="holograma holo-pulse" style="top: 3650px; left: 4200px; color: var(--neon-negocio);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                    <line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+                </svg>
+            </div>
+            <div class="holograma holo-float" style="top: 3650px; left: 1800px; color: var(--neon-captura);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+            </div>
+            <div class="holograma holo-spin" style="top: 2250px; left: 850px; color: var(--neon-revolucion);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
             </div>
 
         </div>
