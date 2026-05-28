@@ -1,39 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cartografía del Control Digital - El Enemigo Conoce el Sistema</title>
-    
+
     <!-- Fuentes Premium -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
             --bg-principal: #030508;
             --bg-nodo: rgba(13, 17, 23, 0.85);
             --bg-modal: rgba(10, 14, 20, 0.95);
-            
+
             /* Paleta Neón basada en la investigación */
-            --neon-captura: #ff3366;   /* Rojo Dopamina / Adicción */
-            --neon-vigilancia: #00e5ff; /* Cian Panóptico */
-            --neon-algoritmo: #ffaa00;  /* Naranja / Amarillo Opacidad */
-            --neon-revolucion: #00ff66; /* Verde Ética Hacker */
-            --neon-negocio: #b800ff;    /* Púrpura Plutonio Digital */
-            --neon-centro: #ffffff;     /* Blanco Eje */
-            
+            --neon-captura: #ff3366;
+            /* Rojo Dopamina / Adicción */
+            --neon-vigilancia: #00e5ff;
+            /* Cian Panóptico */
+            --neon-algoritmo: #ffaa00;
+            /* Naranja / Amarillo Opacidad */
+            --neon-revolucion: #00ff66;
+            /* Verde Ética Hacker */
+            --neon-negocio: #b800ff;
+            /* Púrpura Plutonio Digital */
+            --neon-centro: #ffffff;
+            /* Blanco Eje */
+
             --texto-principal: #f8fafc;
             --texto-secundario: #94a3b8;
             --texto-mutado: #475569;
             --linea-base: #1e293b;
-            
+
             --font-display: 'Space Grotesk', sans-serif;
             --font-body: 'Inter', sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
 
         body {
             background-color: var(--bg-principal);
@@ -48,81 +62,223 @@
         }
 
         @keyframes backgroundPan {
-            from { background-position: 0 0; }
-            to { background-position: -400px -400px; }
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: -400px -400px;
+            }
         }
 
         /* Pantalla de Intro */
         #intro-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #000; z-index: 1000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transition: opacity 1s ease, visibility 1s;
         }
+
         #intro-overlay h1 {
-            font-family: var(--font-display); font-size: 4vw; color: #fff;
-            text-transform: uppercase; letter-spacing: 4px; text-align: center;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            font-family: var(--font-display);
+            font-size: 4vw;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
             animation: glitch 2s infinite;
         }
+
         #intro-overlay p {
-            font-family: var(--font-display); color: var(--neon-vigilancia); margin-top: 20px;
-            font-size: 1.5vw; animation: pulse 2s infinite; cursor: pointer;
+            font-family: var(--font-display);
+            color: var(--neon-vigilancia);
+            margin-top: 20px;
+            font-size: 1.5vw;
+            animation: pulse 2s infinite;
+            cursor: pointer;
         }
 
         @keyframes glitch {
-            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
-            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
-            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
-            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
-            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
-            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
-            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75); }
+            0% {
+                text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.05em 0 rgba(0, 255, 0, 0.75), 0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            14% {
+                text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.05em 0 rgba(0, 255, 0, 0.75), 0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            15% {
+                text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            49% {
+                text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            50% {
+                text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            99% {
+                text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            100% {
+                text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
         }
 
         /* Contenedor y Lienzo */
-        #viewport { width: 100vw; height: 100vh; position: relative; cursor: grab; touch-action: none; }
-        #viewport:active { cursor: grabbing; }
+        #viewport {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        #viewport:active {
+            cursor: grabbing;
+        }
 
         #canvas {
-            width: 6000px; height: 4500px; /* Lienzo expandido */
+            width: 6000px;
+            height: 4500px;
+            /* Lienzo expandido */
             position: absolute;
             transform-origin: 0 0;
             transition: filter 0.4s ease, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
             will-change: transform;
         }
-        #canvas.sin-transicion { transition: filter 0.4s ease; }
-        #canvas.desenfocado { filter: blur(15px) grayscale(50%) brightness(0.4); pointer-events: none; }
+
+        #canvas.sin-transicion {
+            transition: filter 0.4s ease;
+        }
+
+        #canvas.desenfocado {
+            filter: blur(15px) grayscale(50%) brightness(0.4);
+            pointer-events: none;
+        }
 
         /* HUD de Navegación */
         #hud {
-            position: fixed; bottom: 40px; right: 40px; z-index: 50;
-            display: flex; gap: 15px; background: rgba(15, 23, 42, 0.7);
-            padding: 15px; border-radius: 20px; backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 50;
+            display: flex;
+            gap: 15px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .hud-btn {
-            background: rgba(255,255,255,0.1); border: none; color: #fff;
-            width: 50px; height: 50px; border-radius: 50%; font-size: 24px;
-            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .hud-btn:active { background: rgba(255,255,255,0.2); transform: scale(1.1); }
-        .hud-btn.primary { background: var(--neon-vigilancia); color: #000; font-weight: bold; }
+
+        .hud-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .hud-btn.primary {
+            background: var(--neon-vigilancia);
+            color: #000;
+            font-weight: bold;
+        }
 
         /* Capa SVG */
-        #svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        #svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
 
         /* Líneas y Animaciones SVG */
-        .linea-bucle { fill: none; stroke-width: 6; stroke-dasharray: 15 15; animation: flujoDatos 2.5s linear infinite; opacity: 0.8; }
-        .linea-sensor { fill: none; stroke: var(--linea-base); stroke-width: 3; stroke-dasharray: 8 8; opacity: 0.4; }
-        .linea-subnodo { fill: none; stroke: var(--texto-mutado); stroke-width: 2; }
-        
-        .etiqueta-flujo { fill: #fff; font-family: var(--font-display); font-size: 22px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.8)); }
-        .etiqueta-bg { fill: rgba(10,14,20,0.8); stroke: var(--texto-mutado); stroke-width: 1; rx: 15; }
-        .etiqueta-subtexto { font-family: var(--font-body); font-size: 14px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; opacity: 0.9; }
+        .linea-bucle {
+            fill: none;
+            stroke-width: 6;
+            stroke-dasharray: 15 15;
+            animation: flujoDatos 2.5s linear infinite;
+            opacity: 0.8;
+        }
 
-        @keyframes flujoDatos { to { stroke-dashoffset: -60; } }
-        .particula { fill: #fff; filter: drop-shadow(0 0 12px #fff); }
+        .linea-sensor {
+            fill: none;
+            stroke: var(--linea-base);
+            stroke-width: 3;
+            stroke-dasharray: 8 8;
+            opacity: 0.4;
+        }
+
+        .linea-subnodo {
+            fill: none;
+            stroke: var(--texto-mutado);
+            stroke-width: 2;
+        }
+
+        .etiqueta-flujo {
+            fill: #fff;
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+        }
+
+        .etiqueta-bg {
+            fill: rgba(10, 14, 20, 0.8);
+            stroke: var(--texto-mutado);
+            stroke-width: 1;
+            rx: 15;
+        }
+
+        .etiqueta-subtexto {
+            font-family: var(--font-body);
+            font-size: 14px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        @keyframes flujoDatos {
+            to {
+                stroke-dashoffset: -60;
+            }
+        }
+
+        .particula {
+            fill: #fff;
+            filter: drop-shadow(0 0 12px #fff);
+        }
 
         /* Hologramas Decorativos Cypherpunk 3D */
         .holograma-3d {
@@ -132,13 +288,14 @@
             margin-left: -200px;
             margin-top: -200px;
             pointer-events: none;
-            z-index: 1; /* Detrás de las tarjetas */
+            z-index: 1;
+            /* Detrás de las tarjetas */
             opacity: 0.9;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        
+
         /* Proyección de Brillo de Fondo */
         .holo-glow {
             position: absolute;
@@ -205,27 +362,41 @@
 
         /* Animación de Respiración */
         @keyframes holoBreathe {
-            0%, 100% { transform: scale3d(0.93, 0.93, 0.93); }
-            50% { transform: scale3d(1.07, 1.07, 1.07); }
+
+            0%,
+            100% {
+                transform: scale3d(0.93, 0.93, 0.93);
+            }
+
+            50% {
+                transform: scale3d(1.07, 1.07, 1.07);
+            }
         }
 
         /* Glitch Periódico */
         @keyframes holoGlitch {
-            0%, 93%, 97%, 100% {
+
+            0%,
+            93%,
+            97%,
+            100% {
                 transform: translate3d(0, 0, 0);
                 filter: hue-rotate(0deg) saturate(1);
                 clip-path: inset(0 0 0 0);
             }
+
             94% {
                 transform: translate3d(-6px, 3px, 5px) skewX(8deg);
                 filter: hue-rotate(70deg) saturate(1.8);
                 clip-path: inset(15% 0 70% 0);
             }
+
             95% {
                 transform: translate3d(8px, -4px, -5px) skewY(-8deg);
                 filter: hue-rotate(-70deg) saturate(2);
                 clip-path: inset(55% 0 15% 0);
             }
+
             96% {
                 transform: translate3d(-2px, 1px, 2px);
                 filter: hue-rotate(140deg) saturate(1.3);
@@ -237,50 +408,79 @@
         .holo-rot-slow {
             animation: holoRotateSlow 25s linear infinite;
         }
+
         @keyframes holoRotateSlow {
-            0% { transform: rotateY(0deg) rotateX(15deg); }
-            100% { transform: rotateY(360deg) rotateX(15deg); }
+            0%, 100% {
+                transform: rotateY(-25deg) rotateX(15deg) rotateZ(-2deg);
+            }
+            50% {
+                transform: rotateY(25deg) rotateX(25deg) rotateZ(3deg);
+            }
         }
 
         /* Cap 3: Vigilancia (Radar/Ojo escaneando) */
         .holo-rot-scan {
             animation: holoRotateScan 8s ease-in-out infinite;
         }
+
         @keyframes holoRotateScan {
-            0%, 100% { transform: rotateY(-35deg) rotateX(15deg); }
-            50% { transform: rotateY(35deg) rotateX(15deg); }
+            0%, 100% {
+                transform: rotateY(-35deg) rotateX(10deg) rotateZ(-3deg);
+            }
+            50% {
+                transform: rotateY(35deg) rotateX(25deg) rotateZ(3deg);
+            }
         }
+
         .radar-beam {
             transform-origin: 100px 100px;
             animation: radarSweep 4s linear infinite;
         }
+
         @keyframes radarSweep {
-            0% { transform: rotate(0deg); opacity: 0.1; }
-            50% { opacity: 0.6; }
-            100% { transform: rotate(360deg); opacity: 0.1; }
+            0% {
+                transform: rotate(0deg);
+                opacity: 0.1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: rotate(360deg);
+                opacity: 0.1;
+            }
         }
 
         /* Cap 4: Algoritmos (Cubo 3D Real) */
         .cube-container {
-            width: 110px;
-            height: 110px;
+            width: 180px;
+            height: 180px;
             position: relative;
             transform-style: preserve-3d;
             animation: rotateCube 18s linear infinite;
         }
+
         @keyframes rotateCube {
-            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+            0% {
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            }
+
+            100% {
+                transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg);
+            }
         }
+
         .cube-face {
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 1.5px solid var(--neon-algoritmo);
-            background: rgba(255, 170, 0, 0.03);
+            border: 2px solid var(--neon-algoritmo);
+            background: rgba(255, 170, 0, 0.05);
             color: var(--neon-algoritmo);
             font-family: monospace;
-            font-size: 11px;
+            font-size: 16px;
             line-height: 1.2;
             padding: 8px;
             box-sizing: border-box;
@@ -291,12 +491,30 @@
             backface-visibility: visible;
             box-shadow: inset 0 0 15px rgba(255, 170, 0, 0.15), 0 0 10px rgba(255, 170, 0, 0.1);
         }
-        .cube-face.front  { transform: translateZ(55px); }
-        .cube-face.back   { transform: rotateY(180deg) translateZ(55px); }
-        .cube-face.left   { transform: rotateY(-90deg) translateZ(55px); }
-        .cube-face.right  { transform: rotateY(90deg) translateZ(55px); }
-        .cube-face.top    { transform: rotateX(90deg) translateZ(55px); }
-        .cube-face.bottom { transform: rotateX(-90deg) translateZ(55px); }
+
+        .cube-face.front {
+            transform: translateZ(90px);
+        }
+
+        .cube-face.back {
+            transform: rotateY(180deg) translateZ(90px);
+        }
+
+        .cube-face.left {
+            transform: rotateY(-90deg) translateZ(90px);
+        }
+
+        .cube-face.right {
+            transform: rotateY(90deg) translateZ(90px);
+        }
+
+        .cube-face.top {
+            transform: rotateX(90deg) translateZ(90px);
+        }
+
+        .cube-face.bottom {
+            transform: rotateX(-90deg) translateZ(90px);
+        }
 
         /* Cap 5: Revolución (Red P2P latiendo) */
         .net-layer-front {
@@ -306,6 +524,7 @@
             transform-style: preserve-3d;
             animation: netExpand 6s ease-in-out infinite alternate;
         }
+
         .net-layer-back {
             position: absolute;
             width: 100%;
@@ -313,43 +532,86 @@
             transform-style: preserve-3d;
             animation: netContract 6s ease-in-out infinite alternate;
         }
+
         @keyframes netExpand {
-            0% { transform: translateZ(20px) scale(0.9); }
-            100% { transform: translateZ(50px) scale(1.1); }
+            0% {
+                transform: translateZ(20px) scale(0.9);
+            }
+
+            100% {
+                transform: translateZ(50px) scale(1.1);
+            }
         }
+
         @keyframes netContract {
-            0% { transform: translateZ(-20px) scale(1.1); }
-            100% { transform: translateZ(-50px) scale(0.9); }
+            0% {
+                transform: translateZ(-20px) scale(1.1);
+            }
+
+            100% {
+                transform: translateZ(-50px) scale(0.9);
+            }
         }
 
         /* Cap 6: El Modelo de Negocio (Servidores con flotación) */
         .holo-rot-float {
             animation: holoRotateFloat 10s ease-in-out infinite;
         }
+
         @keyframes holoRotateFloat {
-            0%, 100% { transform: translateY(0px) rotateY(0deg) rotateX(20deg); }
-            50% { transform: translateY(-25px) rotateY(180deg) rotateX(20deg); }
+            0%, 100% {
+                transform: translateY(0px) rotateY(-20deg) rotateX(15deg) rotateZ(-2deg);
+            }
+            50% {
+                transform: translateY(-25px) rotateY(20deg) rotateX(25deg) rotateZ(2deg);
+            }
         }
+
         .server-disc {
             stroke-dasharray: 200;
             animation: discSpin 8s linear infinite;
         }
+
         .server-disc-reverse {
             stroke-dasharray: 180;
             animation: discSpinRev 6s linear infinite;
         }
-        @keyframes discSpin { 100% { stroke-dashoffset: -400; } }
-        @keyframes discSpinRev { 100% { stroke-dashoffset: 360; } }
+
+        @keyframes discSpin {
+            100% {
+                stroke-dashoffset: -400;
+            }
+        }
+
+        @keyframes discSpinRev {
+            100% {
+                stroke-dashoffset: 360;
+            }
+        }
 
         .data-particle {
             fill: var(--neon-negocio);
             animation: particleRise 2s infinite linear;
         }
+
         @keyframes particleRise {
-            0% { transform: translateY(80px); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { transform: translateY(-80px); opacity: 0; }
+            0% {
+                transform: translateY(80px);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-80px);
+                opacity: 0;
+            }
         }
 
         /* Cap 7: Manipulación (Transmisión / Ondas de antena) */
@@ -358,10 +620,23 @@
             animation: waveRadiate 3s infinite cubic-bezier(0.1, 0.8, 0.3, 1);
             stroke-width: 1.5;
         }
+
         @keyframes waveRadiate {
-            0% { r: 10px; opacity: 1; stroke-width: 2; }
-            50% { opacity: 0.6; }
-            100% { r: 90px; opacity: 0; stroke-width: 0.5; }
+            0% {
+                r: 10px;
+                opacity: 1;
+                stroke-width: 2;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                r: 90px;
+                opacity: 0;
+                stroke-width: 0.5;
+            }
         }
 
         /* Reacciones de Dopamina (Cerebro de Adicción) */
@@ -369,13 +644,17 @@
             animation: dopaPulse 2.5s infinite ease-in-out;
             transform-origin: center;
         }
+
         @keyframes dopaPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 r: 2px;
                 opacity: 0.4;
                 fill: var(--neon-captura);
                 filter: drop-shadow(0 0 2px var(--neon-captura));
             }
+
             50% {
                 r: 7px;
                 opacity: 1;
@@ -383,208 +662,601 @@
                 filter: drop-shadow(0 0 8px #fff) drop-shadow(0 0 15px var(--neon-captura));
             }
         }
-        .dopa-1 { animation-delay: 0s; }
-        .dopa-2 { animation-delay: 0.5s; }
-        .dopa-3 { animation-delay: 1.0s; }
-        .dopa-4 { animation-delay: 1.5s; }
-        .dopa-5 { animation-delay: 2.0s; }
+
+        .dopa-1 {
+            animation-delay: 0s;
+        }
+
+        .dopa-2 {
+            animation-delay: 0.5s;
+        }
+
+        .dopa-3 {
+            animation-delay: 1.0s;
+        }
+
+        .dopa-4 {
+            animation-delay: 1.5s;
+        }
+
+        .dopa-5 {
+            animation-delay: 2.0s;
+        }
 
         /* El Tornillo Maestro (Centro 3D) */
         .nodo-smartphone {
-            position: absolute; width: 280px; height: 550px;
-            transform: translate(-50%, -50%); cursor: pointer; z-index: 30;
+            position: absolute;
+            width: 280px;
+            height: 550px;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 30;
             perspective: 1000px;
         }
+
         .smartphone-body {
-            width: 100%; height: 100%; position: relative;
+            width: 100%;
+            height: 100%;
+            position: relative;
             background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 6px solid #334155; border-radius: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.1), 0 0 100px rgba(255,255,255,0.15);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border: 6px solid #334155;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.1), 0 0 100px rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transform: rotateY(0deg) rotateX(0deg);
             transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.5s ease;
             transform-style: preserve-3d;
         }
+
         .nodo-smartphone:active .smartphone-body {
             transform: rotateY(-10deg) rotateX(5deg) scale(1.05);
-            box-shadow: -20px 40px 80px rgba(0,0,0,0.9), 0 0 150px rgba(255,255,255,0.3);
+            box-shadow: -20px 40px 80px rgba(0, 0, 0, 0.9), 0 0 150px rgba(255, 255, 255, 0.3);
         }
-        .smart-screen { 
-            background: #000; width: 90%; height: 90%; border-radius: 25px; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            text-align: center; padding: 20px; border: 2px solid #000;
-            position: relative; overflow: hidden;
+
+        .smart-screen {
+            background: #000;
+            width: 90%;
+            height: 90%;
+            border-radius: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #000;
+            position: relative;
+            overflow: hidden;
         }
+
         /* Reflejo pantalla */
         .smart-screen::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(to bottom right, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
-            transform: rotate(30deg); pointer-events: none;
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg);
+            pointer-events: none;
         }
-        .smart-notch { width: 45%; height: 25px; background: #000; position: absolute; top: 15px; border-radius: 0 0 15px 15px; z-index: 2; border-bottom: 1px solid #222;}
-        .smart-screen h2 { font-family: var(--font-display); font-size: 28px; color: var(--neon-centro); margin-bottom: 15px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.5);}
-        .smart-screen p { font-size: 15px; color: var(--texto-secundario); font-weight: 300; }
-        .sensor-halo { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); border-radius: 50%; border: 2px dashed rgba(255,255,255,0.2); pointer-events: none; animation: spin 20s linear infinite; }
-        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        .smart-notch {
+            width: 45%;
+            height: 25px;
+            background: #000;
+            position: absolute;
+            top: 15px;
+            border-radius: 0 0 15px 15px;
+            z-index: 2;
+            border-bottom: 1px solid #222;
+        }
+
+        .smart-screen h2 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--neon-centro);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .smart-screen p {
+            font-size: 15px;
+            color: var(--texto-secundario);
+            font-weight: 300;
+        }
+
+        .sensor-halo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
 
         /* Nodos Principales Expandidos */
         .nodo {
-            position: absolute; width: 480px; background-color: var(--bg-nodo);
-            border-radius: 24px; border: 2px solid; overflow: hidden;
-            transform: translate(-50%, -50%); cursor: pointer;
+            position: absolute;
+            width: 480px;
+            background-color: var(--bg-nodo);
+            border-radius: 24px;
+            border: 2px solid;
+            overflow: hidden;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); z-index: 10;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            z-index: 10;
             backdrop-filter: blur(10px);
         }
-        .nodo:active { transform: translate(-50%, -50%) scale(1.08); z-index: 20; }
-        
+
+        .nodo:active {
+            transform: translate(-50%, -50%) scale(1.08);
+            z-index: 20;
+        }
+
         .nodo-img-bg {
-            width: 100%; height: 160px; background-size: cover; background-position: center;
-            position: relative; border-bottom: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .nodo-img-bg::after { /* Gradiente para oscurecer la imagen */
-            content:''; position:absolute; top:0; left:0; right:0; bottom:0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--bg-nodo));
+
+        .nodo-img-bg::after {
+            /* Gradiente para oscurecer la imagen */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), var(--bg-nodo));
         }
-        .nodo-content { padding: 30px; position: relative; }
-        
-        .nodo h2 { font-family: var(--font-display); font-size: 32px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; position: relative; z-index: 2;}
-        .nodo h3 { font-family: var(--font-body); font-size: 18px; color: var(--texto-secundario); margin-bottom: 20px; font-weight: 400; position: relative; z-index: 2;}
-        
-        .nodo ul { list-style: none; margin-bottom: 25px; }
-        .nodo li { font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; color: #cbd5e1; }
-        .nodo li::before { content: '▸'; margin-right: 10px; font-size: 20px; }
-        
+
+        .nodo-content {
+            padding: 30px;
+            position: relative;
+        }
+
+        .nodo h2 {
+            font-family: var(--font-display);
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nodo h3 {
+            font-family: var(--font-body);
+            font-size: 18px;
+            color: var(--texto-secundario);
+            margin-bottom: 20px;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nodo ul {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .nodo li {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            color: #cbd5e1;
+        }
+
+        .nodo li::before {
+            content: '▸';
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
         .nodo-badge {
-            display: inline-block; padding: 8px 16px; border-radius: 20px;
-            font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         /* Satélites de Información */
         .satelite {
-            position: absolute; width: 28px; height: 28px;
-            border-radius: 50%; transform: translate(-50%, -50%);
-            cursor: pointer; z-index: 25;
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 25;
             transition: transform 0.2s;
             animation: flotacion 4s ease-in-out infinite;
         }
-        
-        .satelite:active { transform: translate(-50%, -50%) scale(1.3) !important; animation-play-state: paused !important; }
-        
-        @keyframes flotacion {
-            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
-            25% { transform: translate(calc(-50% - 10px), calc(-50% + 8px)) scale(1.05); }
-            50% { transform: translate(-50%, calc(-50% - 15px)) scale(1.1); box-shadow: 0 0 25px currentColor, 0 0 40px currentColor; }
-            75% { transform: translate(calc(-50% + 10px), calc(-50% + 5px)) scale(1.05); }
-            100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+
+        /* Área táctil ampliada invisible para Smart TVs */
+        .satelite::after {
+            content: '';
+            position: absolute;
+            top: -20px; left: -20px; right: -20px; bottom: -20px;
+            border-radius: 50%;
         }
 
-        .s-rojo { background-color: var(--neon-captura); color: rgba(255, 51, 102, 0.6); border: 2px solid #fff; }
-        .s-cian { background-color: var(--neon-vigilancia); color: rgba(0, 229, 255, 0.6); border: 2px solid #fff; }
-        .s-amarillo { background-color: var(--neon-algoritmo); color: rgba(255, 170, 0, 0.6); border: 2px solid #fff; }
-        .s-verde { background-color: var(--neon-revolucion); color: rgba(0, 255, 102, 0.6); border: 2px solid #fff; }
-        .s-purpura { background-color: var(--neon-negocio); color: rgba(184, 0, 255, 0.6); border: 2px solid #fff; }
-        .s-blanco { background-color: var(--neon-centro); color: rgba(255, 255, 255, 0.6); border: 2px solid #555; }
+        .satelite:active {
+            transform: translate(-50%, -50%) scale(1.3) !important;
+            animation-play-state: paused !important;
+        }
+
+        @keyframes flotacion {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+            }
+
+            25% {
+                transform: translate(calc(-50% - 10px), calc(-50% + 8px)) scale(1.05);
+            }
+
+            50% {
+                transform: translate(-50%, calc(-50% - 15px)) scale(1.1);
+                box-shadow: 0 0 25px currentColor, 0 0 40px currentColor;
+            }
+
+            75% {
+                transform: translate(calc(-50% + 10px), calc(-50% + 5px)) scale(1.05);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+            }
+        }
+
+        .s-rojo {
+            background-color: var(--neon-captura);
+            color: rgba(255, 51, 102, 0.6);
+            border: 2px solid #fff;
+        }
+
+        .s-cian {
+            background-color: var(--neon-vigilancia);
+            color: rgba(0, 229, 255, 0.6);
+            border: 2px solid #fff;
+        }
+
+        .s-amarillo {
+            background-color: var(--neon-algoritmo);
+            color: rgba(255, 170, 0, 0.6);
+            border: 2px solid #fff;
+        }
+
+        .s-verde {
+            background-color: var(--neon-revolucion);
+            color: rgba(0, 255, 102, 0.6);
+            border: 2px solid #fff;
+        }
+
+        .s-purpura {
+            background-color: var(--neon-negocio);
+            color: rgba(184, 0, 255, 0.6);
+            border: 2px solid #fff;
+        }
+
+        .s-blanco {
+            background-color: var(--neon-centro);
+            color: rgba(255, 255, 255, 0.6);
+            border: 2px solid #555;
+        }
 
         /* Variaciones Temáticas de Nodos */
-        .n-rojo { border-color: var(--neon-captura); box-shadow: 0 0 40px rgba(255, 51, 102, 0.15); }
-        .n-rojo h2, .n-rojo li::before, .n-rojo .nodo-badge { color: var(--neon-captura); }
-        
-        .n-cian { border-color: var(--neon-vigilancia); box-shadow: 0 0 40px rgba(0, 229, 255, 0.15); }
-        .n-cian h2, .n-cian li::before, .n-cian .nodo-badge { color: var(--neon-vigilancia); }
-        
-        .n-amarillo { border-color: var(--neon-algoritmo); box-shadow: 0 0 40px rgba(255, 170, 0, 0.15); }
-        .n-amarillo h2, .n-amarillo li::before, .n-amarillo .nodo-badge { color: var(--neon-algoritmo); }
-        
-        .n-verde { border-color: var(--neon-revolucion); box-shadow: 0 0 40px rgba(0, 255, 102, 0.15); }
-        .n-verde h2, .n-verde li::before, .n-verde .nodo-badge { color: var(--neon-revolucion); }
-        
-        .n-purpura { border-color: var(--neon-negocio); box-shadow: 0 0 40px rgba(184, 0, 255, 0.15); }
-        .n-purpura h2, .n-purpura li::before, .n-purpura .nodo-badge { color: var(--neon-negocio); }
+        .n-rojo {
+            border-color: var(--neon-captura);
+            box-shadow: 0 0 40px rgba(255, 51, 102, 0.15);
+        }
+
+        .n-rojo h2,
+        .n-rojo li::before,
+        .n-rojo .nodo-badge {
+            color: var(--neon-captura);
+        }
+
+        .n-cian {
+            border-color: var(--neon-vigilancia);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.15);
+        }
+
+        .n-cian h2,
+        .n-cian li::before,
+        .n-cian .nodo-badge {
+            color: var(--neon-vigilancia);
+        }
+
+        .n-amarillo {
+            border-color: var(--neon-algoritmo);
+            box-shadow: 0 0 40px rgba(255, 170, 0, 0.15);
+        }
+
+        .n-amarillo h2,
+        .n-amarillo li::before,
+        .n-amarillo .nodo-badge {
+            color: var(--neon-algoritmo);
+        }
+
+        .n-verde {
+            border-color: var(--neon-revolucion);
+            box-shadow: 0 0 40px rgba(0, 255, 102, 0.15);
+        }
+
+        .n-verde h2,
+        .n-verde li::before,
+        .n-verde .nodo-badge {
+            color: var(--neon-revolucion);
+        }
+
+        .n-purpura {
+            border-color: var(--neon-negocio);
+            box-shadow: 0 0 40px rgba(184, 0, 255, 0.15);
+        }
+
+        .n-purpura h2,
+        .n-purpura li::before,
+        .n-purpura .nodo-badge {
+            color: var(--neon-negocio);
+        }
 
         /* Modal Expansivo (Diseño 3 columnas) */
         #modal-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
         }
-        #modal-container.activo { opacity: 1; pointer-events: all; }
-        
+
+        #modal-container.activo {
+            opacity: 1;
+            pointer-events: all;
+        }
+
         .modal-content {
-            background: var(--bg-modal); width: 95%; max-width: 1800px; height: 92vh;
-            border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); 
-            position: relative; box-shadow: 0 40px 100px rgba(0,0,0,1);
-            display: flex; flex-direction: column; overflow: hidden;
+            background: var(--bg-modal);
+            width: 95%;
+            max-width: 1800px;
+            height: 92vh;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        
+
         .modal-header {
-            padding: 30px 40px 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 30px 40px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
         }
-        .modal-close { 
-            position: absolute; top: 25px; right: 30px; font-size: 40px; 
-            color: var(--texto-secundario); cursor: pointer; background: none; border: none; 
-            transition: color 0.2s, transform 0.2s; z-index: 10;
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            font-size: 40px;
+            color: var(--texto-secundario);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s, transform 0.2s;
+            z-index: 10;
         }
-        .modal-close:active { color: #fff; transform: rotate(90deg); }
-        
-        .modal-title { font-family: var(--font-display); font-size: 40px; text-transform: uppercase; margin-bottom: 5px; }
-        .modal-chapter { font-size: 18px; color: var(--texto-secundario); letter-spacing: 2px; text-transform: uppercase;}
+
+        .modal-close:active {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 40px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .modal-chapter {
+            font-size: 18px;
+            color: var(--texto-secundario);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
         .modal-body {
-            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px;
-            padding: 25px 40px; overflow-y: auto; flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2vw;
+            padding: 2vh 3vw;
+            overflow-y: auto;
+            flex-grow: 1;
         }
-        
-        .modal-body::-webkit-scrollbar { width: 8px; }
-        .modal-body::-webkit-scrollbar-track { background: transparent; }
-        .modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 8px; border: 1px solid var(--bg-modal);}
 
-        .modal-col { display: flex; flex-direction: column; gap: 15px; }
-        .modal-subtitle { font-family: var(--font-display); font-size: 24px; color: #fff; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-        .modal-text { font-size: 17px; color: #cbd5e1; line-height: 1.5; text-align: justify; }
-        
-        .modal-box { 
-            background: rgba(0,0,0,0.6); padding: 25px; border-radius: 16px; 
-            border-left: 6px solid; height: 100%; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
         }
-        
-        .m-tabla { width: 100%; border-collapse: collapse; margin-top: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; overflow: hidden;}
-        .m-tabla th { background: rgba(0,0,0,0.5); text-align: left; padding: 12px; color: #fff; font-family: var(--font-display); font-size: 16px; }
-        .m-tabla td { padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 14px; vertical-align: top;}
-        
-        @media (max-width: 1200px) { .modal-body { grid-template-columns: 1fr; } }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            border: 1px solid var(--bg-modal);
+        }
+
+        .modal-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh;
+        }
+
+        .modal-subtitle {
+            font-family: var(--font-display);
+            font-size: clamp(18px, 2.2vh, 24px);
+            color: #fff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.8vh;
+        }
+
+        .modal-text {
+            font-size: clamp(14px, 1.55vh, 18px);
+            color: #cbd5e1;
+            line-height: 1.45;
+            text-align: justify;
+        }
+
+        .modal-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 2vh 1.5vw;
+            border-radius: 16px;
+            border-left: 6px solid;
+            height: 100%;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .m-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .m-tabla th {
+            background: rgba(0, 0, 0, 0.5);
+            text-align: left;
+            padding: 1vh 1vw;
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: clamp(14px, 1.45vh, 16px);
+        }
+
+        .m-tabla td {
+            padding: 1vh 1vw;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: clamp(13px, 1.35vh, 15px);
+            vertical-align: top;
+        }
+
+        @media (max-width: 1200px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+        }
 
         /* Popover para Satélites (En Lienzo) */
         .sat-popover {
-            position: absolute; width: 450px; background: var(--bg-modal);
-            border: 2px solid; border-radius: 16px; padding: 25px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 24;
-            backdrop-filter: blur(10px); transform-origin: top left;
+            position: absolute;
+            width: 450px;
+            background: var(--bg-modal);
+            border: 2px solid;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+            z-index: 24;
+            backdrop-filter: blur(10px);
+            transform-origin: top left;
             animation: popoverIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: default; pointer-events: auto;
+            cursor: default;
+            pointer-events: auto;
         }
-        .sat-popover h3 { font-family: var(--font-display); font-size: 24px; margin-bottom: 15px; text-transform: uppercase; }
-        .sat-popover-content { font-size: 16px; color: #cbd5e1; line-height: 1.6; }
-        .sat-popover-content p { margin-bottom: 10px; }
+
+        .sat-popover h3 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .sat-popover-content {
+            font-size: 16px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .sat-popover-content p {
+            margin-bottom: 10px;
+        }
+
         @keyframes popoverIn {
-            from { opacity: 0; transform: scale(0.8) translate(-20px, -20px); }
-            to { opacity: 1; transform: scale(1) translate(0, 0); }
+            from {
+                opacity: 0;
+                transform: scale(0.8) translate(-20px, -20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translate(0, 0);
+            }
         }
-        
+
         .quote-box {
-            font-style: italic; font-size: 18px; color: #fff; border-left: 4px solid; padding-left: 15px;
-            margin: 10px 0; text-align: left; font-family: var(--font-display);
+            font-style: italic;
+            font-size: 18px;
+            color: #fff;
+            border-left: 4px solid;
+            padding-left: 15px;
+            margin: 10px 0;
+            text-align: left;
+            font-family: var(--font-display);
         }
 
         .highlight-text {
-            color: #fff; font-weight: bold; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;
+            color: #fff;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
-
     </style>
 </head>
+
 <body>
 
     <!-- Overlay de Introducción -->
@@ -595,16 +1267,40 @@
 
     <!-- Controles HUD -->
     <div id="hud">
-        <button class="hud-btn" onclick="showAll()" title="Mostrar Todo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button>
-        <button class="hud-btn" onclick="zoom(-0.2)" title="Alejar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
-        <button class="hud-btn" onclick="recenter()" title="Centrar al Smartphone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
-        <button class="hud-btn" onclick="zoom(0.2)" title="Acercar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
-        <button class="hud-btn primary" onclick="toggleFullscreen()" title="Pantalla Completa"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+        <button class="hud-btn" onclick="showAll()" title="Mostrar Todo"><svg width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                </path>
+            </svg></button>
+        <button class="hud-btn" onclick="zoom(-0.2)" title="Alejar"><svg width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg></button>
+        <button class="hud-btn" onclick="recenter()" title="Centrar al Smartphone"><svg width="20" height="20"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg></button>
+        <button class="hud-btn" onclick="zoom(0.2)" title="Acercar"><svg width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg></button>
+        <button class="hud-btn primary" onclick="toggleFullscreen()" title="Pantalla Completa"><svg width="20"
+                height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                </path>
+            </svg></button>
     </div>
 
     <div id="viewport">
         <div id="canvas">
-            
+
             <!-- CAPA DE RUTAS Y CONEXIONES -->
             <svg id="svg-layer">
                 <defs>
@@ -623,48 +1319,86 @@
                 <path class="linea-sensor" d="M 3000 2250 L 1200 2250" />
 
                 <!-- Bucle de Retroalimentación Sistémica -->
-                <path id="ruta-1" class="linea-bucle" stroke="var(--neon-captura)" d="M 1800 1200 Q 3000 800 4200 1200" /> 
-                <path id="ruta-2" class="linea-bucle" stroke="var(--neon-vigilancia)" d="M 4200 1200 Q 4800 1700 4800 2250" />
-                <path id="ruta-3" class="linea-bucle" stroke="var(--neon-algoritmo)" d="M 4800 2250 Q 4800 2800 4200 3300" />
-                <path id="ruta-4" class="linea-bucle" stroke="var(--neon-negocio)" d="M 4200 3300 Q 3000 3700 1800 3300" />
-                <path id="ruta-5" class="linea-bucle" stroke="var(--neon-captura)" d="M 1800 3300 Q 1200 2250 1800 1200" /> 
-                
+                <path id="ruta-1" class="linea-bucle" stroke="var(--neon-captura)"
+                    d="M 1800 1200 Q 3000 800 4200 1200" />
+                <path id="ruta-2" class="linea-bucle" stroke="var(--neon-vigilancia)"
+                    d="M 4200 1200 Q 4800 1700 4800 2250" />
+                <path id="ruta-3" class="linea-bucle" stroke="var(--neon-algoritmo)"
+                    d="M 4800 2250 Q 4800 2800 4200 3300" />
+                <path id="ruta-4" class="linea-bucle" stroke="var(--neon-negocio)"
+                    d="M 4200 3300 Q 3000 3700 1800 3300" />
+                <path id="ruta-5" class="linea-bucle" stroke="var(--neon-captura)"
+                    d="M 1800 3300 Q 1200 2250 1800 1200" />
+
                 <path id="ruta-6" class="linea-bucle" stroke="var(--neon-revolucion)" d="M 1200 2250 L 1800 1200" />
-                <path id="ruta-7" class="linea-bucle" stroke="var(--neon-revolucion)" d="M 1200 2250 L 4200 1200" opacity="0.3" />
+                <path id="ruta-7" class="linea-bucle" stroke="var(--neon-revolucion)" d="M 1200 2250 L 4200 1200"
+                    opacity="0.3" />
 
                 <!-- Animación de Datos (Partículas) -->
-                <circle class="particula" r="10" fill="var(--neon-captura)"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#ruta-1"/></animateMotion></circle>
-                <circle class="particula" r="8" fill="#fff"><animateMotion dur="5s" repeatCount="indefinite" begin="2.5s"><mpath href="#ruta-1"/></animateMotion></circle>
-                <circle class="particula" r="10" fill="var(--neon-vigilancia)"><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#ruta-2"/></animateMotion></circle>
-                <circle class="particula" r="10" fill="var(--neon-algoritmo)"><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#ruta-3"/></animateMotion></circle>
-                <circle class="particula" r="10" fill="var(--neon-negocio)"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#ruta-4"/></animateMotion></circle>
-                <circle class="particula" r="10" fill="var(--neon-captura)"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#ruta-5"/></animateMotion></circle>
+                <circle class="particula" r="10" fill="var(--neon-captura)">
+                    <animateMotion dur="5s" repeatCount="indefinite">
+                        <mpath href="#ruta-1" />
+                    </animateMotion>
+                </circle>
+                <circle class="particula" r="8" fill="#fff">
+                    <animateMotion dur="5s" repeatCount="indefinite" begin="2.5s">
+                        <mpath href="#ruta-1" />
+                    </animateMotion>
+                </circle>
+                <circle class="particula" r="10" fill="var(--neon-vigilancia)">
+                    <animateMotion dur="4s" repeatCount="indefinite">
+                        <mpath href="#ruta-2" />
+                    </animateMotion>
+                </circle>
+                <circle class="particula" r="10" fill="var(--neon-algoritmo)">
+                    <animateMotion dur="4s" repeatCount="indefinite">
+                        <mpath href="#ruta-3" />
+                    </animateMotion>
+                </circle>
+                <circle class="particula" r="10" fill="var(--neon-negocio)">
+                    <animateMotion dur="5s" repeatCount="indefinite">
+                        <mpath href="#ruta-4" />
+                    </animateMotion>
+                </circle>
+                <circle class="particula" r="10" fill="var(--neon-captura)">
+                    <animateMotion dur="6s" repeatCount="indefinite">
+                        <mpath href="#ruta-5" />
+                    </animateMotion>
+                </circle>
 
                 <!-- Etiquetas de Flujo -->
                 <g transform="translate(3000, 950)">
-                    <rect x="-220" y="-28" width="440" height="65" class="etiqueta-bg"/>
+                    <rect x="-220" y="-28" width="440" height="65" class="etiqueta-bg" />
                     <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-captura)">1. CAPTURA ATENCIONAL →</text>
-                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">El teléfono secuestra la dopamina. La atención es materia prima.</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">El teléfono secuestra la dopamina. La
+                        atención es materia prima.</text>
                 </g>
                 <g transform="translate(4600, 1650)">
-                    <rect x="-250" y="-28" width="500" height="65" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-vigilancia)">2. PROCESAMIENTO OPACO →</text>
-                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los metadatos van a algoritmos opacos que prevén conductas futuras.</text>
+                    <rect x="-250" y="-28" width="500" height="65" class="etiqueta-bg" />
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-vigilancia)">2. PROCESAMIENTO OPACO
+                        →</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los metadatos van a algoritmos opacos
+                        que prevén conductas futuras.</text>
                 </g>
                 <g transform="translate(4600, 2850)">
-                    <rect x="-270" y="-28" width="540" height="65" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-algoritmo)">3. CENTRALIZACIÓN NUBE →</text>
-                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los perfiles se consolidan en monopolios (AWS). El usuario pierde control.</text>
+                    <rect x="-270" y="-28" width="540" height="65" class="etiqueta-bg" />
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-algoritmo)">3. CENTRALIZACIÓN NUBE
+                        →</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los perfiles se consolidan en monopolios
+                        (AWS). El usuario pierde control.</text>
                 </g>
                 <g transform="translate(3000, 3550)">
-                    <rect x="-250" y="-28" width="500" height="65" class="etiqueta-bg"/>
-                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-negocio)">4. DIRECCIONAMIENTO TRIBAL →</text>
-                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los datos refinados se venden a propagandistas. El miedo reinicia el ciclo.</text>
+                    <rect x="-250" y="-28" width="500" height="65" class="etiqueta-bg" />
+                    <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-negocio)">4. DIRECCIONAMIENTO TRIBAL
+                        →</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">Los datos refinados se venden a
+                        propagandistas. El miedo reinicia el ciclo.</text>
                 </g>
                 <g transform="translate(1400, 2750)">
-                    <rect x="-220" y="-28" width="440" height="65" class="etiqueta-bg"/>
+                    <rect x="-220" y="-28" width="440" height="65" class="etiqueta-bg" />
                     <text class="etiqueta-flujo" x="0" y="-5" fill="var(--neon-captura)">↺ REINSERCIÓN MIEDO</text>
-                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">La indignación algorítmica fuerza al usuario de vuelta al teléfono.</text>
+                    <text class="etiqueta-subtexto" x="0" y="22" fill="#cbd5e1">La indignación algorítmica fuerza al
+                        usuario de vuelta al teléfono.</text>
                 </g>
 
                 <!-- Líneas de Satélites -->
@@ -691,7 +1425,7 @@
             <!-- SATÉLITES INTERACTIVOS -->
             <div class="satelite s-rojo" style="top: 850px; left: 1500px;" data-sat="saborizante"></div>
             <div class="satelite s-rojo" style="top: 850px; left: 2100px;" data-sat="modeloFogg"></div>
-            
+
             <div class="satelite s-cian" style="top: 850px; left: 3900px;" data-sat="legislacion"></div>
             <div class="satelite s-cian" style="top: 850px; left: 4500px;" data-sat="citaSchmidt"></div>
 
@@ -709,7 +1443,7 @@
 
 
             <!-- NODOS PRINCIPALES -->
-            
+
             <!-- EL TORNILLO MAESTRO (CENTRO) -->
             <div class="nodo-smartphone" style="top: 2250px; left: 3000px;" data-id="centro">
                 <div class="sensor-halo"></div>
@@ -717,9 +1451,11 @@
                     <div class="smart-notch"></div>
                     <div class="smart-screen">
                         <h2>EL TORNILLO MAESTRO</h2>
-                        <p style="color: #fff; font-weight: bold; margin-bottom: 15px; font-size: 18px;">EL SMARTPHONE</p>
+                        <p style="color: #fff; font-weight: bold; margin-bottom: 15px; font-size: 18px;">EL SMARTPHONE
+                        </p>
                         <p>Anclaje físico de la infraestructura de dominación global.</p>
-                        <div style="margin-top: 20px; font-size: 12px; color: var(--neon-vigilancia); border: 1px solid var(--neon-vigilancia); padding: 5px 10px; border-radius: 10px;">
+                        <div
+                            style="margin-top: 20px; font-size: 12px; color: var(--neon-vigilancia); border: 1px solid var(--neon-vigilancia); padding: 5px 10px; border-radius: 10px;">
                             14-16 Sensores Activos
                         </div>
                     </div>
@@ -769,7 +1505,8 @@
             </div>
 
             <div class="nodo n-purpura" style="top: 3300px; left: 4200px;" data-id="negocio">
-                <div class="nodo-img-bg" style="background-image: url('algoritmo_codigo.png'); filter: hue-rotate(90deg);"></div>
+                <div class="nodo-img-bg"
+                    style="background-image: url('negocio_modelo.png');"></div>
                 <div class="nodo-content">
                     <h2>Capítulo 6</h2>
                     <h3>El modelo de negocio</h3>
@@ -782,8 +1519,10 @@
                 </div>
             </div>
 
-            <div class="nodo n-rojo" style="top: 3300px; left: 1800px; border-color: var(--neon-captura);" data-id="manipulacion">
-                <div class="nodo-img-bg" style="background-image: url('adiccion_cerebro.png'); filter: hue-rotate(-50deg);"></div>
+            <div class="nodo n-rojo" style="top: 3300px; left: 1800px; border-color: var(--neon-captura);"
+                data-id="manipulacion">
+                <div class="nodo-img-bg"
+                    style="background-image: url('manipulacion_masas.png');"></div>
                 <div class="nodo-content">
                     <h2 style="color: #ff0044;">Capítulo 7</h2>
                     <h3>Manipulación</h3>
@@ -811,114 +1550,53 @@
             </div>
 
             <!-- HOLOGRAMAS DECORATIVOS -->
-            <!-- Cap 1: Adicción (Rojo Dopamina) - Cerebro neuronal 3D -->
-            <div class="holograma-3d" style="top: 900px; left: 1800px; color: var(--neon-captura);">
+            <!-- Cap 1: Adicción (Rojo Dopamina) - Bucle Infinito de Dopamina -->
+            <div class="holograma-3d" style="top: 750px; left: 1800px; color: var(--neon-captura);">
                 <div class="holo-glow"></div>
                 <div class="holo-3d-wrapper">
                     <div class="holo-breathe">
                         <div class="holo-rotate holo-rot-slow">
                             <div class="holo-glitch">
-                                <svg viewBox="0 0 500 500" width="100%" height="100%" filter="drop-shadow(0 0 10px currentColor)">
-                                    <!-- Aura background -->
-                                    <path d="M120,300 C80,280 60,220 70,160 C80,100 130,50 200,40 C280,30 360,60 400,120 C440,180 430,260 380,310 C340,350 280,360 250,340 C220,320 180,330 150,330 C130,330 130,310 120,300 Z" fill="currentColor" fill-opacity="0.1" />
-
-                                    <!-- Brain Stem (Bulbo raquídeo y protuberancia) -->
-                                    <path d="M 230 330 C 240 350, 260 370, 250 410 C 240 460, 210 460, 220 410 C 230 380, 200 360, 220 330 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-opacity="0.85" />
-                                    <path d="M 225 350 C 235 370, 245 390, 235 420" fill="none" stroke="currentColor" stroke-width="1" stroke-opacity="0.5" />
+                                <svg viewBox="0 0 200 100" width="100%" height="100%" style="overflow: visible;">
+                                    <defs>
+                                        <filter id="neonLoop" x="-50%" y="-50%" width="200%" height="200%">
+                                            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="g1"/>
+                                            <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="g2"/>
+                                            <feMerge>
+                                                <feMergeNode in="g1"/>
+                                                <feMergeNode in="g2"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                        <path id="infinityPath" d="M 100,50 C 70,-10 10,-10 10,50 C 10,110 70,110 100,50 C 130,-10 190,-10 190,50 C 190,110 130,110 100,50 Z" />
+                                    </defs>
                                     
-                                    <!-- Cerebellum (Cerebelo) -->
-                                    <path d="M 260 330 C 290 320, 360 320, 380 360 C 400 400, 330 430, 280 400 C 250 380, 240 350, 260 330 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-opacity="0.85" />
-                                    <!-- Cerebellum folds (Folias) -->
-                                    <path d="M 270 340 Q 320 330 360 350 M 265 355 Q 330 345 375 370 M 270 370 Q 320 365 365 390 M 280 385 Q 310 385 340 405" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6" />
-
-                                    <!-- Cerebrum (Cerebro) - Outer surface with very detailed gyri and sulci -->
-                                    <!-- Frontal Lobe -->
-                                    <path d="M 200 40 C 130 40, 70 100, 60 160 C 50 230, 90 280, 130 300 C 145 310, 160 320, 180 320 C 180 280, 160 260, 140 250 C 120 240, 100 200, 120 160 C 140 120, 180 100, 220 100 C 260 100, 280 130, 290 160 C 300 190, 280 230, 250 250 C 230 260, 210 280, 230 320 C 240 330, 260 330, 280 320" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.9" />
+                                    <!-- Trazo brillante del infinito -->
+                                    <use href="#infinityPath" fill="none" stroke="currentColor" stroke-width="4" filter="url(#neonLoop)" stroke-opacity="0.6"/>
+                                    <use href="#infinityPath" fill="none" stroke="#fff" stroke-width="1.5" stroke-opacity="0.9"/>
                                     
-                                    <!-- Parietal & Occipital Lobes -->
-                                    <path d="M 200 40 C 280 30, 380 60, 410 140 C 440 220, 410 280, 360 310 C 330 330, 300 320, 280 320" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.9" />
-                                    
-                                    <!-- Temporal Lobe -->
-                                    <path d="M 130 300 C 110 280, 130 230, 170 230 C 210 230, 250 260, 280 280" fill="none" stroke="currentColor" stroke-width="2" stroke-opacity="0.9" />
-
-                                    <!-- Complex internal gyri (sulci lines) -->
-                                    <path d="M 100 160 C 130 160, 150 130, 160 90 M 120 200 C 150 180, 180 200, 190 150 M 150 250 C 180 220, 210 240, 230 200 M 230 80 C 240 120, 270 110, 290 80 M 230 150 C 260 170, 280 140, 320 140 M 250 210 C 280 190, 320 220, 350 180 M 290 280 C 310 250, 350 260, 380 230 M 310 100 C 330 140, 370 120, 380 160 M 340 180 C 370 200, 400 180, 410 220 M 170 180 C 190 200, 220 180, 250 230" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.6" stroke-linecap="round" />
-
-                                    <!-- NUBE DE NEURONAS Y SINAPSIS (Cloud of neurons) -->
-                                    <g class="neurons-network" stroke="currentColor" stroke-width="1" stroke-opacity="0.5">
-                                        <!-- Lines connecting neurons -->
-                                        <line x1="150" y1="180" x2="200" y2="130" />
-                                        <line x1="200" y1="130" x2="260" y2="150" />
-                                        <line x1="260" y1="150" x2="310" y2="120" />
-                                        <line x1="260" y1="150" x2="340" y2="190" />
-                                        <line x1="340" y1="190" x2="290" y2="240" />
-                                        <line x1="290" y1="240" x2="220" y2="210" />
-                                        <line x1="220" y1="210" x2="150" y2="180" />
-                                        <line x1="220" y1="210" x2="200" y2="130" />
-                                        <line x1="220" y1="210" x2="250" y2="270" />
-                                        <line x1="250" y1="270" x2="290" y2="240" />
-                                        <line x1="150" y1="180" x2="130" y2="230" />
-                                        <line x1="130" y1="230" x2="180" y2="260" />
-                                        <line x1="180" y1="260" x2="220" y2="210" />
-                                        <line x1="180" y1="260" x2="150" y2="180" />
-                                        <line x1="260" y1="150" x2="230" y2="90" />
-                                        <line x1="230" y1="90" x2="200" y2="130" />
-                                        <line x1="310" y1="120" x2="360" y2="150" />
-                                        <line x1="360" y1="150" x2="340" y2="190" />
-                                        <line x1="340" y1="190" x2="380" y2="220" />
-                                        <line x1="380" y1="220" x2="290" y2="240" />
-                                        <line x1="250" y1="270" x2="180" y2="260" />
-                                        <!-- More connections for density -->
-                                        <line x1="150" y1="180" x2="170" y2="140" />
-                                        <line x1="170" y1="140" x2="200" y2="130" />
-                                        <line x1="200" y1="130" x2="220" y2="170" />
-                                        <line x1="220" y1="170" x2="260" y2="150" />
-                                        <line x1="220" y1="170" x2="220" y2="210" />
+                                    <!-- Nodos pulsantes en las intersecciones y extremos -->
+                                    <g fill="#fff" filter="url(#neonLoop)">
+                                        <circle cx="100" cy="50" r="4">
+                                            <animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite"/>
+                                        </circle>
+                                        <circle cx="10" cy="50" r="3">
+                                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                                        </circle>
+                                        <circle cx="190" cy="50" r="3">
+                                            <animate attributeName="r" values="3;6;3" dur="2.5s" repeatCount="indefinite"/>
+                                        </circle>
                                     </g>
 
-                                    <!-- Neurons (Nodes) -->
-                                    <g fill="#fff" stroke="var(--neon-captura)" stroke-width="2">
-                                        <circle cx="150" cy="180" r="4"><animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite"/></circle>
-                                        <circle cx="200" cy="130" r="5"><animate attributeName="r" values="5;10;5" dur="2.5s" repeatCount="indefinite"/></circle>
-                                        <circle cx="260" cy="150" r="6"><animate attributeName="r" values="6;12;6" dur="1.8s" repeatCount="indefinite"/></circle>
-                                        <circle cx="310" cy="120" r="4"><animate attributeName="r" values="4;9;4" dur="2.2s" repeatCount="indefinite"/></circle>
-                                        <circle cx="340" cy="190" r="5"><animate attributeName="r" values="5;11;5" dur="2.7s" repeatCount="indefinite"/></circle>
-                                        <circle cx="290" cy="240" r="4"><animate attributeName="r" values="4;8;4" dur="1.9s" repeatCount="indefinite"/></circle>
-                                        <circle cx="220" cy="210" r="6"><animate attributeName="r" values="6;13;6" dur="2.1s" repeatCount="indefinite"/></circle>
-                                        <circle cx="250" cy="270" r="4"><animate attributeName="r" values="4;8;4" dur="2.4s" repeatCount="indefinite"/></circle>
-                                        <circle cx="130" cy="230" r="3"><animate attributeName="r" values="3;6;3" dur="2.8s" repeatCount="indefinite"/></circle>
-                                        <circle cx="180" cy="260" r="5"><animate attributeName="r" values="5;10;5" dur="1.7s" repeatCount="indefinite"/></circle>
-                                        <circle cx="230" cy="90" r="4"><animate attributeName="r" values="4;8;4" dur="2.3s" repeatCount="indefinite"/></circle>
-                                        <circle cx="360" cy="150" r="3"><animate attributeName="r" values="3;7;3" dur="2.6s" repeatCount="indefinite"/></circle>
-                                        <circle cx="380" cy="220" r="3"><animate attributeName="r" values="3;6;3" dur="2.0s" repeatCount="indefinite"/></circle>
-                                        <circle cx="170" cy="140" r="3"><animate attributeName="r" values="3;6;3" dur="2.1s" repeatCount="indefinite"/></circle>
-                                        <circle cx="220" cy="170" r="4"><animate attributeName="r" values="4;7;4" dur="1.8s" repeatCount="indefinite"/></circle>
-                                    </g>
-
-                                    <!-- Glowing Dopamine Pulses (Moving along lines to simulate stimulation) -->
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="2s" repeatCount="indefinite" path="M150,180 L200,130" />
+                                    <!-- Píldoras de dopamina recorriendo el bucle -->
+                                    <circle r="4" fill="#ff0044" filter="url(#neonLoop)">
+                                        <animateMotion dur="4s" repeatCount="indefinite"><mpath href="#infinityPath"/></animateMotion>
                                     </circle>
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M200,130 L260,150" />
+                                    <circle r="4" fill="#ff3366" filter="url(#neonLoop)">
+                                        <animateMotion dur="4s" begin="1.3s" repeatCount="indefinite"><mpath href="#infinityPath"/></animateMotion>
                                     </circle>
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="1.8s" repeatCount="indefinite" path="M260,150 L340,190" />
-                                    </circle>
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="2.2s" repeatCount="indefinite" path="M220,210 L290,240" />
-                                    </circle>
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="2.1s" repeatCount="indefinite" path="M220,210 L150,180" />
-                                    </circle>
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="1.9s" repeatCount="indefinite" path="M260,150 L220,210" />
-                                    </circle>
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="2.4s" repeatCount="indefinite" path="M130,230 L180,260" />
-                                    </circle>
-                                    <circle r="4" fill="#ff0044" filter="drop-shadow(0 0 8px #ff0044)">
-                                        <animateMotion dur="1.5s" repeatCount="indefinite" path="M380,220 L290,240" />
+                                    <circle r="4" fill="#ff6688" filter="url(#neonLoop)">
+                                        <animateMotion dur="4s" begin="2.6s" repeatCount="indefinite"><mpath href="#infinityPath"/></animateMotion>
                                     </circle>
                                 </svg>
                             </div>
@@ -928,7 +1606,7 @@
             </div>
 
             <!-- Cap 3: Vigilancia (Cian Panóptico) - Ojo radar con cono de escaneo -->
-            <div class="holograma-3d" style="top: 900px; left: 4200px; color: var(--neon-vigilancia);">
+            <div class="holograma-3d" style="top: 750px; left: 4200px; color: var(--neon-vigilancia);">
                 <div class="holo-glow"></div>
                 <div class="holo-3d-wrapper">
                     <div class="holo-breathe">
@@ -937,33 +1615,40 @@
                                 <svg viewBox="0 0 200 200">
                                     <defs>
                                         <radialGradient id="scanGrad" cx="50%" cy="15%" r="85%">
-                                            <stop offset="0%" stop-color="var(--neon-vigilancia)" stop-opacity="0.35"/>
-                                            <stop offset="50%" stop-color="var(--neon-vigilancia)" stop-opacity="0.08"/>
-                                            <stop offset="100%" stop-color="var(--neon-vigilancia)" stop-opacity="0"/>
+                                            <stop offset="0%" stop-color="var(--neon-vigilancia)" stop-opacity="0.35" />
+                                            <stop offset="50%" stop-color="var(--neon-vigilancia)"
+                                                stop-opacity="0.08" />
+                                            <stop offset="100%" stop-color="var(--neon-vigilancia)" stop-opacity="0" />
                                         </radialGradient>
                                     </defs>
-                                    
+
                                     <!-- Cono de Escaneo de Radar (Fondo animado) -->
                                     <path d="M100 70 L40 180 L160 180 Z" fill="url(#scanGrad)" />
-                                    <line x1="100" y1="70" x2="40" y2="180" stroke="currentColor" stroke-opacity="0.3" stroke-dasharray="4 4" />
-                                    <line x1="100" y1="70" x2="160" y2="180" stroke="currentColor" stroke-opacity="0.3" stroke-dasharray="4 4" />
-                                    <path d="M40 180 Q100 195 160 180" stroke="currentColor" stroke-opacity="0.4" fill="none" stroke-dasharray="3 6" />
+                                    <line x1="100" y1="70" x2="40" y2="180" stroke="currentColor" stroke-opacity="0.3"
+                                        stroke-dasharray="4 4" />
+                                    <line x1="100" y1="70" x2="160" y2="180" stroke="currentColor" stroke-opacity="0.3"
+                                        stroke-dasharray="4 4" />
+                                    <path d="M40 180 Q100 195 160 180" stroke="currentColor" stroke-opacity="0.4"
+                                        fill="none" stroke-dasharray="3 6" />
 
                                     <!-- Haz de escaneo giratorio -->
                                     <g class="radar-beam">
-                                        <line x1="100" y1="100" x2="100" y2="10" stroke="currentColor" stroke-width="2" />
+                                        <line x1="100" y1="100" x2="100" y2="10" stroke="currentColor"
+                                            stroke-width="2" />
                                         <polygon points="100,100 85,15 100,10" fill="currentColor" opacity="0.15" />
                                     </g>
 
                                     <!-- Triángulo del Ojo Panóptico -->
                                     <polygon points="100,30 35,145 165,145" stroke="currentColor" stroke-width="2" />
-                                    <polygon points="100,42 48,135 152,135" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
-                                    
+                                    <polygon points="100,42 48,135 152,135" stroke="currentColor" stroke-opacity="0.3"
+                                        stroke-width="1" />
+
                                     <!-- El Ojo -->
-                                    <path d="M60 100 Q100 70 140 100 Q100 130 60 100 Z" stroke="currentColor" stroke-width="1.5" />
+                                    <path d="M60 100 Q100 70 140 100 Q100 130 60 100 Z" stroke="currentColor"
+                                        stroke-width="1.5" />
                                     <circle cx="100" cy="100" r="18" stroke="currentColor" stroke-width="1.5" />
                                     <circle cx="100" cy="100" r="8" fill="currentColor" />
-                                    
+
                                     <!-- Líneas de mira -->
                                     <line x1="100" y1="15" x2="100" y2="30" stroke="currentColor" />
                                     <line x1="35" y1="145" x2="20" y2="155" stroke="currentColor" />
@@ -976,7 +1661,7 @@
             </div>
 
             <!-- Cap 4: Algoritmos (Naranja Opacidad) - Cubo 3D Real con binario en caras -->
-            <div class="holograma-3d" style="top: 2250px; left: 5150px; color: var(--neon-algoritmo);">
+            <div class="holograma-3d" style="top: 2250px; left: 5200px; color: var(--neon-algoritmo);">
                 <div class="holo-glow"></div>
                 <div class="holo-3d-wrapper">
                     <div class="holo-breathe">
@@ -1019,7 +1704,7 @@
             </div>
 
             <!-- Cap 5: Revolución (Verde Ética Hacker) - Red P2P de nodos latiendo -->
-            <div class="holograma-3d" style="top: 2250px; left: 850px; color: var(--neon-revolucion);">
+            <div class="holograma-3d" style="top: 2250px; left: 600px; color: var(--neon-revolucion);">
                 <div class="holo-glow"></div>
                 <div class="holo-3d-wrapper">
                     <div class="holo-breathe">
@@ -1029,9 +1714,12 @@
                                 <div class="net-layer-front">
                                     <svg viewBox="0 0 200 200" style="position: absolute; width:100%; height:100%;">
                                         <!-- Conexiones exteriores e internas -->
-                                        <path d="M50 50 L100 25 L150 50 L175 100 L150 150 L100 175 L50 150 L25 100 Z" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.8" />
-                                        <path d="M50 50 L100 100 L150 50 M175 100 L100 100 L25 100 M150 150 L100 100 L50 150" stroke="currentColor" stroke-width="1" stroke-opacity="0.5" />
-                                        
+                                        <path d="M50 50 L100 25 L150 50 L175 100 L150 150 L100 175 L50 150 L25 100 Z"
+                                            stroke="currentColor" stroke-width="1.5" stroke-opacity="0.8" />
+                                        <path
+                                            d="M50 50 L100 100 L150 50 M175 100 L100 100 L25 100 M150 150 L100 100 L50 150"
+                                            stroke="currentColor" stroke-width="1" stroke-opacity="0.5" />
+
                                         <!-- Nodos -->
                                         <circle cx="50" cy="50" r="5" fill="currentColor" />
                                         <circle cx="100" cy="25" r="5" fill="currentColor" />
@@ -1046,10 +1734,12 @@
                                 </div>
                                 <!-- Capa trasera de la red (Z negativa) -->
                                 <div class="net-layer-back">
-                                    <svg viewBox="0 0 200 200" style="position: absolute; width:100%; height:100%; opacity: 0.5;">
+                                    <svg viewBox="0 0 200 200"
+                                        style="position: absolute; width:100%; height:100%; opacity: 0.5;">
                                         <!-- Conexiones cruzadas descentralizadas -->
-                                        <path d="M100 50 L150 100 L100 150 L50 100 Z M100 50 L100 150 M50 100 L150 100" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" />
-                                        
+                                        <path d="M100 50 L150 100 L100 150 L50 100 Z M100 50 L100 150 M50 100 L150 100"
+                                            stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" />
+
                                         <!-- Nodos alternativos -->
                                         <circle cx="100" cy="50" r="4" fill="currentColor" fill-opacity="0.7" />
                                         <circle cx="150" cy="100" r="4" fill="currentColor" fill-opacity="0.7" />
@@ -1064,7 +1754,7 @@
             </div>
 
             <!-- Cap 6: El Modelo de Negocio (Púrpura Plutonio) - Servidores apilados con partículas -->
-            <div class="holograma-3d" style="top: 3650px; left: 4200px; color: var(--neon-negocio);">
+            <div class="holograma-3d" style="top: 3750px; left: 4200px; color: var(--neon-negocio);">
                 <div class="holo-glow"></div>
                 <div class="holo-3d-wrapper">
                     <div class="holo-breathe">
@@ -1073,37 +1763,46 @@
                                 <svg viewBox="0 0 200 200">
                                     <!-- Partículas de datos ascendentes -->
                                     <circle class="data-particle" cx="70" cy="0" r="3" />
-                                    <circle class="data-particle" cx="100" cy="0" r="2.5" style="animation-delay: 0.7s;" />
-                                    <circle class="data-particle" cx="130" cy="0" r="3" style="animation-delay: 1.3s;" />
-                                    
+                                    <circle class="data-particle" cx="100" cy="0" r="2.5"
+                                        style="animation-delay: 0.7s;" />
+                                    <circle class="data-particle" cx="130" cy="0" r="3"
+                                        style="animation-delay: 1.3s;" />
+
                                     <!-- Columnas estructurales traseras -->
                                     <line x1="60" y1="50" x2="60" y2="150" stroke="currentColor" stroke-opacity="0.2" />
-                                    <line x1="140" y1="50" x2="140" y2="150" stroke="currentColor" stroke-opacity="0.2" />
-                                    
+                                    <line x1="140" y1="50" x2="140" y2="150" stroke="currentColor"
+                                        stroke-opacity="0.2" />
+
                                     <!-- Servidor superior -->
                                     <g transform="translate(0, -35)">
-                                        <ellipse class="server-disc" cx="100" cy="80" rx="55" ry="16" stroke="currentColor" stroke-width="2" />
-                                        <ellipse cx="100" cy="86" rx="55" ry="16" stroke="currentColor" stroke-opacity="0.4" />
+                                        <ellipse class="server-disc" cx="100" cy="80" rx="55" ry="16"
+                                            stroke="currentColor" stroke-width="2" />
+                                        <ellipse cx="100" cy="86" rx="55" ry="16" stroke="currentColor"
+                                            stroke-opacity="0.4" />
                                         <!-- Luces LED del servidor -->
                                         <circle cx="70" cy="80" r="2" fill="#fff" />
                                         <circle cx="85" cy="80" r="2" fill="currentColor" />
                                         <circle cx="100" cy="80" r="2" fill="currentColor" />
                                     </g>
-                                    
+
                                     <!-- Servidor central -->
                                     <g transform="translate(0, 0)">
-                                        <ellipse class="server-disc-reverse" cx="100" cy="100" rx="55" ry="16" stroke="currentColor" stroke-width="2" />
-                                        <ellipse cx="100" cy="106" rx="55" ry="16" stroke="currentColor" stroke-opacity="0.4" />
+                                        <ellipse class="server-disc-reverse" cx="100" cy="100" rx="55" ry="16"
+                                            stroke="currentColor" stroke-width="2" />
+                                        <ellipse cx="100" cy="106" rx="55" ry="16" stroke="currentColor"
+                                            stroke-opacity="0.4" />
                                         <!-- Luces LED del servidor -->
                                         <circle cx="70" cy="100" r="2" fill="currentColor" />
                                         <circle cx="85" cy="100" r="2" fill="#fff" />
                                         <circle cx="100" cy="100" r="2" fill="currentColor" />
                                     </g>
-                                    
+
                                     <!-- Servidor inferior -->
                                     <g transform="translate(0, 35)">
-                                        <ellipse class="server-disc" cx="100" cy="120" rx="55" ry="16" stroke="currentColor" stroke-width="2" />
-                                        <ellipse cx="100" cy="126" rx="55" ry="16" stroke="currentColor" stroke-opacity="0.4" />
+                                        <ellipse class="server-disc" cx="100" cy="120" rx="55" ry="16"
+                                            stroke="currentColor" stroke-width="2" />
+                                        <ellipse cx="100" cy="126" rx="55" ry="16" stroke="currentColor"
+                                            stroke-opacity="0.4" />
                                         <!-- Luces LED del servidor -->
                                         <circle cx="70" cy="120" r="2" fill="currentColor" />
                                         <circle cx="85" cy="120" r="2" fill="currentColor" />
@@ -1121,7 +1820,7 @@
             </div>
 
             <!-- Cap 7: Manipulación (Rojo Dopamina) - Antena emitiendo ondas expansivas -->
-            <div class="holograma-3d" style="top: 3650px; left: 1800px; color: var(--neon-captura);">
+            <div class="holograma-3d" style="top: 3750px; left: 1800px; color: var(--neon-captura);">
                 <div class="holo-glow"></div>
                 <div class="holo-3d-wrapper">
                     <div class="holo-breathe">
@@ -1129,30 +1828,42 @@
                             <div class="holo-glitch">
                                 <svg viewBox="0 0 200 200">
                                     <!-- Ondas electromagnéticas expansivas (3D simuladas) -->
-                                    <ellipse class="antenna-wave" cx="100" cy="70" rx="10" ry="4" stroke="currentColor" fill="none" />
-                                    <ellipse class="antenna-wave" cx="100" cy="70" rx="10" ry="4" stroke="currentColor" fill="none" style="animation-delay: 1s;" />
-                                    <ellipse class="antenna-wave" cx="100" cy="70" rx="10" ry="4" stroke="currentColor" fill="none" style="animation-delay: 2s;" />
-                                    
+                                    <ellipse class="antenna-wave" cx="100" cy="70" rx="10" ry="4" stroke="currentColor"
+                                        fill="none" />
+                                    <ellipse class="antenna-wave" cx="100" cy="70" rx="10" ry="4" stroke="currentColor"
+                                        fill="none" style="animation-delay: 1s;" />
+                                    <ellipse class="antenna-wave" cx="100" cy="70" rx="10" ry="4" stroke="currentColor"
+                                        fill="none" style="animation-delay: 2s;" />
+
                                     <!-- Anillo de Emisión -->
-                                    <ellipse cx="100" cy="70" rx="20" ry="7" stroke="currentColor" stroke-opacity="0.3" stroke-dasharray="4 4" />
-                                    
+                                    <ellipse cx="100" cy="70" rx="20" ry="7" stroke="currentColor" stroke-opacity="0.3"
+                                        stroke-dasharray="4 4" />
+
                                     <!-- Torre / Antena -->
                                     <!-- Base de soporte -->
                                     <line x1="50" y1="180" x2="150" y2="180" stroke="currentColor" stroke-width="2" />
                                     <!-- Trusses (Estructura en A) -->
                                     <line x1="100" y1="70" x2="60" y2="180" stroke="currentColor" stroke-width="1.5" />
                                     <line x1="100" y1="70" x2="140" y2="180" stroke="currentColor" stroke-width="1.5" />
-                                    <line x1="100" y1="70" x2="100" y2="180" stroke="currentColor" stroke-opacity="0.4" />
+                                    <line x1="100" y1="70" x2="100" y2="180" stroke="currentColor"
+                                        stroke-opacity="0.4" />
                                     <!-- Cruces de arriostramiento -->
-                                    <line x1="88" y1="100" x2="112" y2="100" stroke="currentColor" stroke-opacity="0.7" />
-                                    <line x1="77" y1="130" x2="123" y2="130" stroke="currentColor" stroke-opacity="0.7" />
-                                    <line x1="66" y1="160" x2="134" y2="160" stroke="currentColor" stroke-opacity="0.7" />
-                                    
-                                    <line x1="60" y1="180" x2="77" y2="130" stroke="currentColor" stroke-opacity="0.5" />
-                                    <line x1="140" y1="180" x2="123" y2="130" stroke="currentColor" stroke-opacity="0.5" />
-                                    <line x1="77" y1="130" x2="100" y2="70" stroke="currentColor" stroke-opacity="0.5" />
-                                    <line x1="123" y1="130" x2="100" y2="70" stroke="currentColor" stroke-opacity="0.5" />
-                                    
+                                    <line x1="88" y1="100" x2="112" y2="100" stroke="currentColor"
+                                        stroke-opacity="0.7" />
+                                    <line x1="77" y1="130" x2="123" y2="130" stroke="currentColor"
+                                        stroke-opacity="0.7" />
+                                    <line x1="66" y1="160" x2="134" y2="160" stroke="currentColor"
+                                        stroke-opacity="0.7" />
+
+                                    <line x1="60" y1="180" x2="77" y2="130" stroke="currentColor"
+                                        stroke-opacity="0.5" />
+                                    <line x1="140" y1="180" x2="123" y2="130" stroke="currentColor"
+                                        stroke-opacity="0.5" />
+                                    <line x1="77" y1="130" x2="100" y2="70" stroke="currentColor"
+                                        stroke-opacity="0.5" />
+                                    <line x1="123" y1="130" x2="100" y2="70" stroke="currentColor"
+                                        stroke-opacity="0.5" />
+
                                     <!-- Punto de Emisión (Cúpula/Esfera) -->
                                     <circle cx="100" cy="70" r="6" fill="#fff" />
                                     <circle cx="100" cy="70" r="12" stroke="currentColor" stroke-opacity="0.5" />
@@ -1169,12 +1880,13 @@
     <!-- MODAL EXPANSIVO PRINCIPAL -->
     <div id="modal-container">
         <div class="modal-content">
-            <button class="modal-close" onpointerdown="event.preventDefault(); cerrarModal('modal-container')">×</button>
+            <button class="modal-close"
+                onpointerdown="event.preventDefault(); cerrarModal('modal-container')">×</button>
             <div class="modal-header">
                 <h3 class="modal-chapter" id="m-chapter">CAPÍTULO X</h3>
                 <h1 class="modal-title" id="m-titulo">Título del Nodo</h1>
             </div>
-            
+
             <div class="modal-body" id="m-body-normal">
                 <div class="modal-col">
                     <h3 class="modal-subtitle">Fundamento Teórico</h3>
@@ -1191,7 +1903,7 @@
                     <div id="m-tabla-container"></div>
                 </div>
             </div>
-            
+
             <!-- Estructura Alternativa para las Conclusiones -->
             <div class="modal-body" id="m-body-centro" style="display: none; grid-template-columns: 1fr;">
                 <div class="modal-col">
@@ -1408,11 +2120,11 @@
         // --- LÓGICA DE MOVIMIENTO, ZOOM Y MULTITOUCH ---
         const viewport = document.getElementById('viewport');
         const canvas = document.getElementById('canvas');
-        
+
         let scale = 1;
-        let currentX = -(3000 - window.innerWidth/2);
-        let currentY = -(2250 - window.innerHeight/2);
-        
+        let currentX = -(3000 - window.innerWidth / 2);
+        let currentY = -(2250 - window.innerHeight / 2);
+
         let isDragging = false, startX, startY;
         let initialPinchDistance = null;
         let initialScale = 1;
@@ -1423,7 +2135,7 @@
         function updateTransform() {
             canvas.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
         }
-        
+
         updateTransform();
 
         function iniciarExperiencia() {
@@ -1444,12 +2156,12 @@
         const DRAG_MIN_PX = 8; // Mínimo de píxeles reales para considerar un desplazamiento intencional
 
         viewport.addEventListener('pointerdown', (e) => {
-            if(document.getElementById('modal-container').classList.contains('activo')) return;
-            
-            if(e.target.closest('.hud-btn')) return; // No iniciar arrastre si se toca un botón
+            if (document.getElementById('modal-container').classList.contains('activo')) return;
+
+            if (e.target.closest('.hud-btn')) return; // No iniciar arrastre si se toca un botón
 
             activePointers.push(e);
-            if(activePointers.length === 1) {
+            if (activePointers.length === 1) {
                 isDragging = true;
                 dragThreshold = false;
                 dragStartX = e.clientX;
@@ -1494,16 +2206,16 @@
                 );
                 const zoomFactor = currentDistance / initialPinchDistance;
                 scale = Math.min(Math.max(0.2, initialScale * zoomFactor), 2);
-                
+
                 const currentMidX = (activePointers[0].clientX + activePointers[1].clientX) / 2;
                 const currentMidY = (activePointers[0].clientY + activePointers[1].clientY) / 2;
-                
+
                 const canvasMidX = (initialPinchMidX - initialCurrentX) / initialScale;
                 const canvasMidY = (initialPinchMidY - initialCurrentY) / initialScale;
-                
+
                 currentX = currentMidX - canvasMidX * scale;
                 currentY = currentMidY - canvasMidY * scale;
-                
+
                 updateTransform();
             }
         });
@@ -1525,13 +2237,13 @@
         function zoom(amount, originX = window.innerWidth / 2, originY = window.innerHeight / 2) {
             const oldScale = scale;
             scale = Math.min(Math.max(0.2, scale + amount), 2);
-            
+
             const canvasOriginX = (originX - currentX) / oldScale;
             const canvasOriginY = (originY - currentY) / oldScale;
-            
+
             currentX = originX - canvasOriginX * scale;
             currentY = originY - canvasOriginY * scale;
-            
+
             updateTransform();
         }
 
@@ -1540,16 +2252,16 @@
             const newScaleX = window.innerWidth / 4800;
             const newScaleY = window.innerHeight / 3200;
             scale = Math.max(0.1, Math.min(newScaleX, newScaleY));
-            
-            currentX = -(3000 * scale - window.innerWidth/2);
-            currentY = -(2250 * scale - window.innerHeight/2);
+
+            currentX = -(3000 * scale - window.innerWidth / 2);
+            currentY = -(2250 * scale - window.innerHeight / 2);
             updateTransform();
         }
 
         function recenter() {
             scale = 0.8;
-            currentX = -(3000 * scale - window.innerWidth/2);
-            currentY = -(2250 * scale - window.innerHeight/2);
+            currentX = -(3000 * scale - window.innerWidth / 2);
+            currentY = -(2250 * scale - window.innerHeight / 2);
             updateTransform();
         }
 
@@ -1563,12 +2275,12 @@
         const nodos = document.querySelectorAll('.nodo, .nodo-smartphone');
         const satelites = document.querySelectorAll('.satelite');
         const modalContainer = document.getElementById('modal-container');
-        
+
         // Nodos Principales
         nodos.forEach(nodo => {
             nodo.addEventListener('click', (e) => {
-                if (dragThreshold) return; 
-                
+                if (dragThreshold) return;
+
                 const id = nodo.getAttribute('data-id');
                 const info = datosCapitulos[id];
 
@@ -1580,7 +2292,7 @@
                 document.getElementById('m-chapter').style.color = info.color;
                 document.getElementById('m-titulo').textContent = info.titulo;
                 document.getElementById('m-titulo').style.color = info.color;
-                
+
                 if (id === 'centro') {
                     // Cargar vista de centro con Conclusiones
                     document.getElementById('m-body-normal').style.display = 'none';
@@ -1594,7 +2306,7 @@
                     document.getElementById('caja-caso').style.borderColor = info.color;
                     document.getElementById('m-tabla-container').innerHTML = info.tablaHtml;
                 }
-                
+
                 modalContainer.classList.add('activo');
                 canvas.classList.add('desenfocado');
             });
@@ -1603,7 +2315,7 @@
         satelites.forEach((sat, index) => {
             sat.style.animationDelay = `${index * -0.7}s`;
             sat.addEventListener('click', (e) => {
-                if (dragThreshold) return; 
+                if (dragThreshold) return;
                 const id = sat.getAttribute('data-sat');
                 const popoverId = `popover-${id}`;
                 const existingPopover = document.getElementById(popoverId);
@@ -1622,20 +2334,20 @@
                 popover.id = popoverId;
                 popover.className = 'sat-popover';
                 popover.style.borderColor = info.color;
-                
+
                 const top = parseInt(sat.style.top);
                 const left = parseInt(sat.style.left);
                 popover.style.top = `${top - 20}px`;
                 popover.style.left = `${left + 35}px`;
-                
+
                 popover.innerHTML = `
                     <h3 style="color:${info.color}">${info.titulo}</h3>
                     <div class="sat-popover-content">${info.contenido}</div>
                 `;
-                
+
                 popover.addEventListener('pointerdown', ev => ev.stopPropagation());
                 popover.addEventListener('click', ev => ev.stopPropagation());
-                
+
                 document.getElementById('canvas').appendChild(popover);
                 sat.style.animationPlayState = 'paused';
             });
@@ -1643,7 +2355,7 @@
 
         function cerrarModal(id) {
             document.getElementById(id).classList.remove('activo');
-            if(id === 'modal-container') canvas.classList.remove('desenfocado');
+            if (id === 'modal-container') canvas.classList.remove('desenfocado');
         }
 
         viewport.addEventListener('click', (e) => {
@@ -1653,7 +2365,7 @@
         });
 
         modalContainer.addEventListener('pointerdown', (e) => { if (e.target === modalContainer) cerrarModal('modal-container'); });
-        
+
         // Prevenir menú contextual en pantallas táctiles (toque prolongado)
         document.addEventListener('contextmenu', e => e.preventDefault());
 
@@ -1662,4 +2374,5 @@
 
     </script>
 </body>
+
 </html>
