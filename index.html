@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cartografía del Control Digital - El Enemigo Conoce el Sistema</title>
+    <title>El Enemigo Conoce el Sistema</title>
 
     <!-- Fuentes Premium -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -410,9 +410,12 @@
         }
 
         @keyframes holoRotateSlow {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: rotateY(-25deg) rotateX(15deg) rotateZ(-2deg);
             }
+
             50% {
                 transform: rotateY(25deg) rotateX(25deg) rotateZ(3deg);
             }
@@ -424,9 +427,12 @@
         }
 
         @keyframes holoRotateScan {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: rotateY(-35deg) rotateX(10deg) rotateZ(-3deg);
             }
+
             50% {
                 transform: rotateY(35deg) rotateX(25deg) rotateZ(3deg);
             }
@@ -559,9 +565,12 @@
         }
 
         @keyframes holoRotateFloat {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px) rotateY(-20deg) rotateX(15deg) rotateZ(-2deg);
             }
+
             50% {
                 transform: translateY(-25px) rotateY(20deg) rotateX(25deg) rotateZ(2deg);
             }
@@ -904,7 +913,10 @@
         .satelite::after {
             content: '';
             position: absolute;
-            top: -20px; left: -20px; right: -20px; bottom: -20px;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
             border-radius: 50%;
         }
 
@@ -1505,8 +1517,7 @@
             </div>
 
             <div class="nodo n-purpura" style="top: 3300px; left: 4200px;" data-id="negocio">
-                <div class="nodo-img-bg"
-                    style="background-image: url('negocio_modelo.png');"></div>
+                <div class="nodo-img-bg" style="background-image: url('negocio_modelo.png');"></div>
                 <div class="nodo-content">
                     <h2>Capítulo 6</h2>
                     <h3>El modelo de negocio</h3>
@@ -1521,8 +1532,7 @@
 
             <div class="nodo n-rojo" style="top: 3300px; left: 1800px; border-color: var(--neon-captura);"
                 data-id="manipulacion">
-                <div class="nodo-img-bg"
-                    style="background-image: url('manipulacion_masas.png');"></div>
+                <div class="nodo-img-bg" style="background-image: url('manipulacion_masas.png');"></div>
                 <div class="nodo-content">
                     <h2 style="color: #ff0044;">Capítulo 7</h2>
                     <h3>Manipulación</h3>
@@ -1560,43 +1570,55 @@
                                 <svg viewBox="0 0 200 100" width="100%" height="100%" style="overflow: visible;">
                                     <defs>
                                         <filter id="neonLoop" x="-50%" y="-50%" width="200%" height="200%">
-                                            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="g1"/>
-                                            <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="g2"/>
+                                            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="g1" />
+                                            <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="g2" />
                                             <feMerge>
-                                                <feMergeNode in="g1"/>
-                                                <feMergeNode in="g2"/>
-                                                <feMergeNode in="SourceGraphic"/>
+                                                <feMergeNode in="g1" />
+                                                <feMergeNode in="g2" />
+                                                <feMergeNode in="SourceGraphic" />
                                             </feMerge>
                                         </filter>
-                                        <path id="infinityPath" d="M 100,50 C 70,-10 10,-10 10,50 C 10,110 70,110 100,50 C 130,-10 190,-10 190,50 C 190,110 130,110 100,50 Z" />
+                                        <path id="infinityPath"
+                                            d="M 100,50 C 70,-10 10,-10 10,50 C 10,110 70,110 100,50 C 130,-10 190,-10 190,50 C 190,110 130,110 100,50 Z" />
                                     </defs>
-                                    
+
                                     <!-- Trazo brillante del infinito -->
-                                    <use href="#infinityPath" fill="none" stroke="currentColor" stroke-width="4" filter="url(#neonLoop)" stroke-opacity="0.6"/>
-                                    <use href="#infinityPath" fill="none" stroke="#fff" stroke-width="1.5" stroke-opacity="0.9"/>
-                                    
+                                    <use href="#infinityPath" fill="none" stroke="currentColor" stroke-width="4"
+                                        filter="url(#neonLoop)" stroke-opacity="0.6" />
+                                    <use href="#infinityPath" fill="none" stroke="#fff" stroke-width="1.5"
+                                        stroke-opacity="0.9" />
+
                                     <!-- Nodos pulsantes en las intersecciones y extremos -->
                                     <g fill="#fff" filter="url(#neonLoop)">
                                         <circle cx="100" cy="50" r="4">
-                                            <animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite"/>
+                                            <animate attributeName="r" values="4;8;4" dur="2s"
+                                                repeatCount="indefinite" />
                                         </circle>
                                         <circle cx="10" cy="50" r="3">
-                                            <animate attributeName="r" values="3;6;3" dur="1.5s" repeatCount="indefinite"/>
+                                            <animate attributeName="r" values="3;6;3" dur="1.5s"
+                                                repeatCount="indefinite" />
                                         </circle>
                                         <circle cx="190" cy="50" r="3">
-                                            <animate attributeName="r" values="3;6;3" dur="2.5s" repeatCount="indefinite"/>
+                                            <animate attributeName="r" values="3;6;3" dur="2.5s"
+                                                repeatCount="indefinite" />
                                         </circle>
                                     </g>
 
                                     <!-- Píldoras de dopamina recorriendo el bucle -->
                                     <circle r="4" fill="#ff0044" filter="url(#neonLoop)">
-                                        <animateMotion dur="4s" repeatCount="indefinite"><mpath href="#infinityPath"/></animateMotion>
+                                        <animateMotion dur="4s" repeatCount="indefinite">
+                                            <mpath href="#infinityPath" />
+                                        </animateMotion>
                                     </circle>
                                     <circle r="4" fill="#ff3366" filter="url(#neonLoop)">
-                                        <animateMotion dur="4s" begin="1.3s" repeatCount="indefinite"><mpath href="#infinityPath"/></animateMotion>
+                                        <animateMotion dur="4s" begin="1.3s" repeatCount="indefinite">
+                                            <mpath href="#infinityPath" />
+                                        </animateMotion>
                                     </circle>
                                     <circle r="4" fill="#ff6688" filter="url(#neonLoop)">
-                                        <animateMotion dur="4s" begin="2.6s" repeatCount="indefinite"><mpath href="#infinityPath"/></animateMotion>
+                                        <animateMotion dur="4s" begin="2.6s" repeatCount="indefinite">
+                                            <mpath href="#infinityPath" />
+                                        </animateMotion>
                                     </circle>
                                 </svg>
                             </div>
